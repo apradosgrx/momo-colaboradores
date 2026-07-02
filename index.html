@@ -153,6 +153,8 @@ body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);mi
       <div class="fr"><label>TLF de contacto <span class="req">*</span></label><input type="tel" id="f-tlf" placeholder="+34 600 000 000"></div>
     </div>
     <div class="fr"><label>Email de contacto <span class="req">*</span></label><input type="email" id="f-email" placeholder="colaborador@email.com"></div>
+    <div class="fr"><label>Denominación fiscal <span class="req">*</span></label><input type="text" id="f-denominacion" placeholder="Nombre con el que facturas"></div>
+    <div class="fr"><label>Número de cuenta (IBAN)</label><input type="text" id="f-cuenta" placeholder="ES00 0000 0000 0000 0000 0000"></div>
     <div class="two-col">
       <div class="fr"><label>Dirección fiscal <span class="req">*</span></label><input type="text" id="f-dir" placeholder="Calle Mayor 1, Marbella"></div>
       <div class="fr"><label>Base <span class="req">*</span></label><input type="text" id="f-base" placeholder="Marbella, Málaga"></div>
@@ -332,7 +334,8 @@ function submitForm() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       nombre: nombre, empresa: val('f-empresa'), tipo: tipoEl.value,
-      nif: nif, tlf: tlf, email: email, dir: dir, base: base,
+      nif: nif, tlf: tlf, email: email, denominacion: val('f-denominacion'),
+      cuenta: val('f-cuenta'), dir: dir, base: base,
       comentarios: val('f-comentarios'),
       conductores: conductores, vehiculos: vehiculos
     })
@@ -350,7 +353,7 @@ function submitForm() {
 }
 
 function resetForm() {
-  var ids = ['f-nombre','f-empresa','f-nif','f-tlf','f-email','f-dir','f-base','f-comentarios'];
+  var ids = ['f-nombre','f-empresa','f-nif','f-tlf','f-email','f-denominacion','f-cuenta','f-dir','f-base','f-comentarios'];
   ids.forEach(function(id) { document.getElementById(id).value = ''; });
   document.querySelectorAll('input[name="tipo"]').forEach(function(r) { r.checked = false; });
   qtys = { conductores: 1, vehiculos: 1 };
@@ -464,6 +467,8 @@ function openModal(idx) {
           '<div class="mfield"><label>Email</label><p>' + (c.email||'—') + '</p></div>' +
           '<div class="mfield"><label>Dirección fiscal</label><p>' + (c.dir||'—') + '</p></div>' +
           '<div class="mfield"><label>Base</label><p>' + (c.base||'—') + '</p></div>' +
+          '<div class="mfield"><label>Denominación fiscal</label><p>' + (c.denominacion||'—') + '</p></div>' +
+          '<div class="mfield"><label>Número de cuenta</label><p>' + (c.cuenta||'—') + '</p></div>' +
           (c.comentarios ? '<div class="mfield" style="grid-column:1/-1"><label>Comentarios</label><p>' + c.comentarios + '</p></div>' : '') +
         '</div>' +
       '</div>' +
