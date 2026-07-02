@@ -5,240 +5,215 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoMo — Registro de Colaboradores</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-  :root {
-    --black: #0a0a0a; --white: #ffffff; --gold: #C9A84C; --gold-light: #e8c96e;
-    --gray-100: #f7f7f7; --gray-200: #ebebeb; --gray-400: #aaaaaa;
-    --gray-600: #666666; --gray-800: #333333; --red: #e03434; --green: #1a9e5a;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Inter', sans-serif; background: var(--gray-100); color: var(--black); min-height: 100vh; }
-
-  .topbar { background: var(--black); padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .topbar-logo { font-size: 18px; font-weight: 700; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; }
-  .topbar-logo span { color: var(--white); }
-  .tab-btns { display: flex; gap: 4px; }
-  .tab-btn { padding: 6px 18px; border-radius: 6px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; transition: background 0.15s, color 0.15s; }
-  .tab-btn.active { background: var(--gold); color: var(--black); }
-  .tab-btn:not(.active) { background: transparent; color: var(--gray-400); }
-  .tab-btn:not(.active):hover { background: #1e1e1e; color: var(--white); }
-  .tab-btn.hidden { display: none; }
-
-  .view { display: none; }
-  .view.active { display: block; }
-
-  .form-wrap { max-width: 680px; margin: 0 auto; padding: 40px 16px 80px; }
-  .form-header { margin-bottom: 32px; }
-  .form-header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
-  .form-header p { margin-top: 6px; font-size: 14px; color: var(--gray-600); }
-  .section-card { background: var(--white); border-radius: 12px; padding: 28px 24px; margin-bottom: 20px; border: 1px solid var(--gray-200); }
-  .section-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--gray-200); }
-  .field-row { margin-bottom: 18px; }
-  .field-row:last-child { margin-bottom: 0; }
-  .field-row label { display: block; font-size: 13px; font-weight: 500; color: var(--gray-800); margin-bottom: 6px; }
-  .field-row label .req { color: var(--red); margin-left: 2px; }
-  .field-row input[type="text"], .field-row input[type="email"], .field-row input[type="tel"], .field-row input[type="date"], .field-row textarea {
-    width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-200); border-radius: 8px;
-    font-size: 14px; font-family: 'Inter', sans-serif; color: var(--black); background: var(--white); transition: border-color 0.15s; outline: none;
-  }
-  .field-row input:focus, .field-row textarea:focus { border-color: var(--gold); }
-  .field-row textarea { resize: vertical; min-height: 80px; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .radio-group { display: flex; gap: 16px; flex-wrap: wrap; }
-  .radio-opt { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: var(--gray-800); padding: 8px 16px; border: 1.5px solid var(--gray-200); border-radius: 8px; transition: border-color 0.15s, background 0.15s; }
-  .radio-opt:has(input:checked) { border-color: var(--gold); background: #fdf8ee; }
-  .radio-opt input { accent-color: var(--gold); }
-
-  /* photo upload */
-  .photo-upload-box { border: 2px dashed var(--gray-200); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: var(--gray-100); position: relative; }
-  .photo-upload-box:hover { border-color: var(--gold); background: #fdf8ee; }
-  .photo-upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .photo-upload-box .upload-icon { font-size: 24px; margin-bottom: 4px; }
-  .photo-upload-box p { font-size: 12px; color: var(--gray-600); }
-  .photo-preview-img { width: 90px; height: 90px; object-fit: cover; border-radius: 8px; margin: 8px auto 0; display: none; border: 1.5px solid var(--gray-200); }
-  .carnet-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-  /* doc upload */
-  .doc-upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .doc-upload-box { border: 2px dashed var(--gray-200); border-radius: 10px; padding: 16px 12px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: var(--gray-100); position: relative; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
-  .doc-upload-box:hover { border-color: var(--gold); background: #fdf8ee; }
-  .doc-upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .doc-upload-box .doc-icon { font-size: 22px; }
-  .doc-upload-box p { font-size: 11px; color: var(--gray-600); margin: 0; }
-  .doc-name { font-size: 11px; color: var(--green); font-weight: 600; word-break: break-all; display: none; }
-  .doc-name.visible { display: block; }
-  @media (max-width: 600px) { .doc-upload-grid { grid-template-columns: 1fr; } }
-
-  /* qty */
-  .qty-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .qty-field label { font-size: 13px; font-weight: 500; color: var(--gray-800); margin-bottom: 8px; display: block; }
-  .qty-picker { display: flex; align-items: center; border: 1.5px solid var(--gray-200); border-radius: 8px; overflow: hidden; width: fit-content; }
-  .qty-picker button { width: 40px; height: 40px; border: none; background: var(--gray-100); font-size: 18px; cursor: pointer; color: var(--gray-600); font-family: 'Inter', sans-serif; }
-  .qty-picker button:hover { background: var(--gray-200); }
-  .qty-val { width: 48px; text-align: center; font-size: 16px; font-weight: 600; border: none; outline: none; color: var(--black); background: var(--white); font-family: 'Inter', sans-serif; height: 40px; line-height: 40px; }
-
-  /* repeat blocks */
-  .repeat-block { background: var(--white); border-radius: 12px; border: 1px solid var(--gray-200); overflow: hidden; margin-bottom: 16px; }
-  .repeat-block-header { background: var(--black); padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
-  .block-num { width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--black); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .repeat-block-header h3 { font-size: 14px; font-weight: 600; color: var(--white); }
-  .repeat-block-body { padding: 20px; }
-  .subsection-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-400); margin: 18px 0 10px; padding-top: 14px; border-top: 1px solid var(--gray-200); }
-
-  .btn-submit { width: 100%; padding: 14px; background: var(--gold); color: var(--black); border: none; border-radius: 10px; font-size: 15px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; letter-spacing: 0.04em; transition: background 0.15s; margin-top: 8px; }
-  .btn-submit:hover { background: var(--gold-light); }
-  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-  .success-msg { display: none; background: var(--green); color: var(--white); border-radius: 10px; padding: 16px 20px; text-align: center; font-weight: 600; font-size: 15px; margin-top: 16px; }
-  .error-msg { display: none; background: var(--red); color: var(--white); border-radius: 10px; padding: 16px 20px; text-align: center; font-weight: 600; font-size: 14px; margin-top: 16px; }
-
-  /* login */
-  .login-wrap { max-width: 380px; margin: 80px auto; padding: 0 16px; }
-  .login-card { background: var(--white); border-radius: 16px; padding: 36px 32px; border: 1px solid var(--gray-200); text-align: center; }
-  .login-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-  .login-card p { font-size: 13px; color: var(--gray-600); margin-bottom: 28px; }
-  .login-card input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--gray-200); border-radius: 8px; font-size: 15px; font-family: 'Inter', sans-serif; outline: none; text-align: center; letter-spacing: 0.1em; margin-bottom: 14px; }
-  .login-card input:focus { border-color: var(--gold); }
-  .login-card button { width: 100%; padding: 12px; background: var(--gold); color: var(--black); border: none; border-radius: 8px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; }
-  .login-card button:hover { background: var(--gold-light); }
-  .login-error { color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
-
-  /* fichas */
-  .fichas-wrap { max-width: 1100px; margin: 0 auto; padding: 40px 20px 80px; }
-  .fichas-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; gap: 12px; flex-wrap: wrap; }
-  .fichas-header h2 { font-size: 22px; font-weight: 700; }
-  .fichas-actions { display: flex; align-items: center; gap: 10px; }
-  .fichas-count { background: var(--gold); color: var(--black); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
-  .btn-logout, .btn-refresh { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-600); padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; }
-  .btn-logout:hover { border-color: var(--red); color: var(--red); }
-  .btn-refresh:hover { border-color: var(--gold); color: var(--gold); }
-  .empty-state { text-align: center; padding: 80px 20px; color: var(--gray-400); }
-  .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
-  .loading-spinner { text-align: center; padding: 60px; color: var(--gray-400); font-size: 14px; }
-  .fichas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-  .ficha-card { background: var(--white); border-radius: 14px; border: 1px solid var(--gray-200); overflow: hidden; cursor: pointer; transition: box-shadow 0.15s, transform 0.15s; }
-  .ficha-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.10); transform: translateY(-2px); }
-  .ficha-card-top { background: var(--black); padding: 20px; display: flex; align-items: center; gap: 16px; }
-  .ficha-avatar { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--gold); flex-shrink: 0; background: var(--gray-800); display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--gold); overflow: hidden; }
-  .ficha-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-  .ficha-card-name { font-size: 16px; font-weight: 700; color: var(--white); }
-  .ficha-card-tipo { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-top: 2px; }
-  .ficha-card-body { padding: 16px 20px; }
-  .ficha-pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-  .ficha-pill { background: var(--gray-100); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 500; color: var(--gray-600); }
-  .ficha-pill.gold { background: #fdf8ee; color: #7a5e1a; }
-  .ficha-meta { font-size: 12px; color: var(--gray-400); }
-
-  /* modal */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: flex-start; justify-content: center; padding: 32px 16px; overflow-y: auto; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); border-radius: 16px; width: 100%; max-width: 760px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.3); margin: auto; }
-  .modal-head { background: var(--black); padding: 28px 32px; display: flex; align-items: center; gap: 20px; }
-  .modal-avatar { width: 72px; height: 72px; border-radius: 50%; border: 3px solid var(--gold); background: var(--gray-800); display: flex; align-items: center; justify-content: center; font-size: 32px; color: var(--gold); flex-shrink: 0; overflow: hidden; }
-  .modal-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-  .modal-head-info h2 { font-size: 22px; font-weight: 700; color: var(--white); }
-  .modal-head-info .modal-tipo { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); margin-top: 4px; }
-  .modal-head-info .modal-fecha { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
-  .modal-close { margin-left: auto; background: none; border: none; color: var(--gray-400); font-size: 24px; cursor: pointer; align-self: flex-start; }
-  .modal-close:hover { color: var(--white); }
-  .modal-body { padding: 28px 32px; }
-  .modal-section { margin-bottom: 28px; }
-  .modal-section:last-child { margin-bottom: 0; }
-  .modal-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--gray-200); }
-  .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
-  .modal-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px 20px; }
-  .modal-field label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-400); margin-bottom: 3px; }
-  .modal-field p { font-size: 14px; font-weight: 500; color: var(--black); word-break: break-all; }
-  .sub-block { background: var(--gray-100); border-radius: 10px; padding: 16px; margin-bottom: 10px; }
-  .sub-block:last-child { margin-bottom: 0; }
-  .sub-block-title { font-size: 12px; font-weight: 700; color: var(--gray-600); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .sub-block-divider { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-400); margin: 12px 0 8px; padding-top: 10px; border-top: 1px solid var(--gray-200); }
-  .doc-pill { display: inline-flex; align-items: center; gap: 6px; background: #eef6ff; color: #1a5fa3; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 600; text-decoration: none; border: 1.5px solid #b8d4f5; }
-  .doc-pill:hover { background: #daeeff; }
-  .conductor-foto-row { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
-  .conductor-foto-item { text-align: center; }
-  .conductor-foto-item span { display: block; font-size: 10px; color: var(--gray-400); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
-  .conductor-foto-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1.5px solid var(--gray-200); display: block; }
-
-  @media (max-width: 600px) {
-    .modal-grid, .modal-grid-3 { grid-template-columns: 1fr; }
-    .modal-body { padding: 20px; }
-    .modal-head { padding: 20px; gap: 12px; }
-    .fichas-grid { grid-template-columns: 1fr; }
-    .qty-row, .two-col, .carnet-row { grid-template-columns: 1fr; }
-    .topbar { padding: 0 16px; }
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+:root {
+  --black:#0a0a0a;--white:#ffffff;--gold:#C9A84C;--gold-light:#e8c96e;
+  --g100:#f7f7f7;--g200:#ebebeb;--g400:#aaaaaa;--g600:#666;--g800:#333;
+  --red:#e03434;--green:#1a9e5a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);min-height:100vh}
+.topbar{background:var(--black);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:18px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.logo span{color:var(--white)}
+.tabs{display:flex;gap:4px}
+.tab{padding:6px 18px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;background:transparent;color:var(--g400)}
+.tab.active{background:var(--gold);color:var(--black)}
+.tab:hover:not(.active){background:#1e1e1e;color:var(--white)}
+.tab.hidden{display:none}
+.view{display:none}.view.active{display:block}
+.form-wrap{max-width:680px;margin:0 auto;padding:40px 16px 80px}
+.form-header{margin-bottom:32px}
+.form-header h1{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.form-header p{margin-top:6px;font-size:14px;color:var(--g600)}
+.card{background:var(--white);border-radius:12px;padding:28px 24px;margin-bottom:20px;border:1px solid var(--g200)}
+.card-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--g200)}
+.fr{margin-bottom:18px}.fr:last-child{margin-bottom:0}
+.fr label{display:block;font-size:13px;font-weight:500;color:var(--g800);margin-bottom:6px}
+.fr label .req{color:var(--red);margin-left:2px}
+.fr input[type=text],.fr input[type=email],.fr input[type=tel],.fr textarea{width:100%;padding:10px 14px;border:1.5px solid var(--g200);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--black);background:var(--white);outline:none;transition:border-color .15s}
+.fr input:focus,.fr textarea:focus{border-color:var(--gold)}
+.fr textarea{resize:vertical;min-height:80px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.radio-group{display:flex;gap:12px;flex-wrap:wrap}
+.radio-opt{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:var(--g800);padding:8px 16px;border:1.5px solid var(--g200);border-radius:8px;transition:border-color .15s,background .15s}
+.radio-opt:has(input:checked){border-color:var(--gold);background:#fdf8ee}
+.radio-opt input{accent-color:var(--gold)}
+.qty-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.qty-field label{font-size:13px;font-weight:500;color:var(--g800);margin-bottom:8px;display:block}
+.qty-picker{display:flex;align-items:center;border:1.5px solid var(--g200);border-radius:8px;overflow:hidden;width:fit-content}
+.qty-btn{width:40px;height:40px;border:none;background:var(--g100);font-size:18px;cursor:pointer;color:var(--g600);font-family:'Inter',sans-serif}
+.qty-btn:hover{background:var(--g200)}
+.qty-val{width:48px;text-align:center;font-size:16px;font-weight:600;color:var(--black);background:var(--white);height:40px;line-height:40px}
+.block{background:var(--white);border-radius:12px;border:1px solid var(--g200);overflow:hidden;margin-bottom:16px}
+.block-head{background:var(--black);padding:12px 20px;display:flex;align-items:center;gap:10px}
+.block-num{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--black);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.block-head h3{font-size:14px;font-weight:600;color:var(--white)}
+.block-body{padding:20px}
+.sublabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--g400);margin:18px 0 10px;padding-top:14px;border-top:1px solid var(--g200)}
+.upload-box{border:2px dashed var(--g200);border-radius:10px;padding:20px;text-align:center;cursor:pointer;background:var(--g100);position:relative;transition:border-color .15s,background .15s}
+.upload-box:hover{border-color:var(--gold);background:#fdf8ee}
+.upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:24px;margin-bottom:4px}
+.upload-box p{font-size:12px;color:var(--g600)}
+.photo-preview{width:90px;height:90px;object-fit:cover;border-radius:8px;margin:8px auto 0;display:none;border:1.5px solid var(--g200)}
+.carnet-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.doc-box{border:2px dashed var(--g200);border-radius:10px;padding:16px 12px;text-align:center;cursor:pointer;background:var(--g100);position:relative;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:border-color .15s}
+.doc-box:hover{border-color:var(--gold);background:#fdf8ee}
+.doc-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.doc-icon{font-size:22px}
+.doc-box p{font-size:11px;color:var(--g600);margin:0}
+.doc-name{font-size:11px;color:var(--green);font-weight:600;word-break:break-all;display:none}
+.doc-name.show{display:block}
+/* progress */
+.progress-wrap{display:none;margin-top:16px;background:var(--white);border-radius:10px;padding:20px;border:1px solid var(--g200)}
+.progress-label{font-size:13px;font-weight:500;color:var(--g800);margin-bottom:10px;text-align:center}
+.progress-bar-bg{background:var(--g200);border-radius:20px;height:10px;overflow:hidden}
+.progress-bar{background:var(--gold);height:10px;border-radius:20px;width:0%;transition:width .3s}
+.progress-step{font-size:12px;color:var(--g600);margin-top:8px;text-align:center}
+.btn-submit{width:100%;padding:14px;background:var(--gold);color:var(--black);border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:.04em;transition:background .15s;margin-top:8px}
+.btn-submit:hover{background:var(--gold-light)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+.msg{border-radius:10px;padding:16px 20px;text-align:center;font-weight:600;font-size:15px;margin-top:16px;display:none}
+.msg.ok{background:var(--green);color:var(--white)}
+.msg.err{background:var(--red);color:var(--white)}
+.login-wrap{max-width:380px;margin:80px auto;padding:0 16px}
+.login-card{background:var(--white);border-radius:16px;padding:36px 32px;border:1px solid var(--g200);text-align:center}
+.login-card h2{font-size:20px;font-weight:700;margin-bottom:6px}
+.login-card p{font-size:13px;color:var(--g600);margin-bottom:28px}
+.login-card input{width:100%;padding:12px 16px;border:1.5px solid var(--g200);border-radius:8px;font-size:15px;font-family:'Inter',sans-serif;outline:none;text-align:center;letter-spacing:.1em;margin-bottom:14px}
+.login-card input:focus{border-color:var(--gold)}
+.login-card button{width:100%;padding:12px;background:var(--gold);color:var(--black);border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer}
+.login-card button:hover{background:var(--gold-light)}
+.login-err{color:var(--red);font-size:13px;margin-top:10px;display:none}
+.fichas-wrap{max-width:1100px;margin:0 auto;padding:40px 20px 80px}
+.fichas-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:12px;flex-wrap:wrap}
+.fichas-top h2{font-size:22px;font-weight:700}
+.fichas-actions{display:flex;align-items:center;gap:10px}
+.badge{background:var(--gold);color:var(--black);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
+.btn-sm{background:none;border:1.5px solid var(--g200);color:var(--g600);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer}
+.btn-sm:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm.danger:hover{border-color:var(--red);color:var(--red)}
+.empty{text-align:center;padding:80px 20px;color:var(--g400)}
+.empty .ei{font-size:48px;margin-bottom:12px}
+.spinner{text-align:center;padding:60px;color:var(--g400);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.fcard{background:var(--white);border-radius:14px;border:1px solid var(--g200);overflow:hidden;cursor:pointer;transition:box-shadow .15s,transform .15s}
+.fcard:hover{box-shadow:0 8px 32px rgba(0,0,0,.1);transform:translateY(-2px)}
+.fcard-top{background:var(--black);padding:20px;display:flex;align-items:center;gap:16px}
+.avatar{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;background:var(--g800);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--gold);overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.fcard-name{font-size:16px;font-weight:700;color:var(--white)}
+.fcard-tipo{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-top:2px}
+.fcard-body{padding:16px 20px}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pill{background:var(--g100);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:500;color:var(--g600)}
+.pill.gold{background:#fdf8ee;color:#7a5e1a}
+.fcard-meta{font-size:12px;color:var(--g400)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:760px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.3);margin:auto}
+.modal-head{background:var(--black);padding:28px 32px;display:flex;align-items:center;gap:20px}
+.mavatar{width:72px;height:72px;border-radius:50%;border:3px solid var(--gold);background:var(--g800);display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--gold);flex-shrink:0;overflow:hidden}
+.mavatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.minfo h2{font-size:22px;font-weight:700;color:var(--white)}
+.minfo .mtipo{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-top:4px}
+.minfo .mfecha{font-size:12px;color:var(--g400);margin-top:4px}
+.mclose{margin-left:auto;background:none;border:none;color:var(--g400);font-size:24px;cursor:pointer;align-self:flex-start}
+.mclose:hover{color:var(--white)}
+.modal-body{padding:28px 32px}
+.msec{margin-bottom:28px}.msec:last-child{margin-bottom:0}
+.msec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--g200)}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+.mfield label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--g400);margin-bottom:3px}
+.mfield p{font-size:14px;font-weight:500;color:var(--black);word-break:break-all}
+.sub{background:var(--g100);border-radius:10px;padding:16px;margin-bottom:10px}
+.sub:last-child{margin-bottom:0}
+.sub-title{font-size:12px;font-weight:700;color:var(--g600);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
+.sub-div{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--g400);margin:12px 0 8px;padding-top:10px;border-top:1px solid var(--g200)}
+.foto-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.foto-item{text-align:center}
+.foto-item span{display:block;font-size:10px;color:var(--g400);margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
+.foto-item img{width:80px;height:80px;object-fit:cover;border-radius:8px;border:1.5px solid var(--g200);display:block}
+.doc-pill{display:inline-flex;align-items:center;gap:6px;background:#eef6ff;color:#1a5fa3;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;text-decoration:none;border:1.5px solid #b8d4f5;margin:4px}
+.doc-pill:hover{background:#daeeff}
+@media(max-width:600px){
+  .mgrid,.two-col,.carnet-row,.doc-grid,.qty-row{grid-template-columns:1fr}
+  .modal-body{padding:20px}.modal-head{padding:20px;gap:12px}
+  .grid{grid-template-columns:1fr}.topbar{padding:0 16px}
+}
 </style>
 </head>
 <body>
 
 <nav class="topbar">
-  <div class="topbar-logo">Mo<span>Mo</span> <span style="color:#555;font-weight:300;font-size:13px;letter-spacing:0.06em">Transfers</span></div>
-  <div class="tab-btns">
-    <button class="tab-btn active" id="tab-form" onclick="switchView('formulario')">Nuevo registro</button>
-    <button class="tab-btn hidden" id="tab-fichas" onclick="switchView('fichas')">Fichas</button>
-    <button class="tab-btn" id="tab-admin" onclick="switchView('admin')">Admin</button>
+  <div class="logo">Mo<span>Mo</span> <span style="color:#555;font-weight:300;font-size:13px;letter-spacing:.06em">Transfers</span></div>
+  <div class="tabs">
+    <button class="tab active" id="tab-form" onclick="switchView('formulario')">Nuevo registro</button>
+    <button class="tab hidden" id="tab-fichas" onclick="switchView('fichas')">Fichas</button>
+    <button class="tab" id="tab-admin" onclick="switchView('admin')">Admin</button>
   </div>
 </nav>
 
-<!-- ══ FORMULARIO ══ -->
+<!-- FORMULARIO -->
 <div id="view-formulario" class="view active">
 <div class="form-wrap">
   <div class="form-header">
     <h1>Registro de Colaboradores</h1>
-    <p>Completa tus datos, los de tus conductores y vehículos.</p>
+    <p>Completa tus datos, conductores y vehículos.</p>
   </div>
-
-  <!-- Colaborador -->
-  <div class="section-card">
-    <div class="section-title">Datos del colaborador</div>
-    <div class="field-row"><label>Nombre completo <span class="req">*</span></label><input type="text" id="f-nombre" placeholder="José Manuel García"></div>
-    <div class="field-row">
+  <div class="card">
+    <div class="card-title">Datos del colaborador</div>
+    <div class="fr"><label>Nombre completo <span class="req">*</span></label><input type="text" id="f-nombre" placeholder="José Manuel García"></div>
+    <div class="fr">
       <label>Tipo <span class="req">*</span></label>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="tipo" value="Empresa"> Empresa</label>
         <label class="radio-opt"><input type="radio" name="tipo" value="Autónomo"> Autónomo</label>
       </div>
     </div>
-    <div class="field-row"><label>GIF / NIF <span class="req">*</span></label><input type="text" id="f-nif" placeholder="B12345678"></div>
-    <div class="field-row"><label>TLF de contacto <span class="req">*</span></label><input type="tel" id="f-tlf" placeholder="+34 600 000 000"></div>
-    <div class="field-row"><label>Email de contacto <span class="req">*</span></label><input type="email" id="f-email" placeholder="colaborador@email.com"></div>
-    <div class="field-row"><label>Dirección <span class="req">*</span></label><input type="text" id="f-dir" placeholder="Calle Mayor 1, Marbella"></div>
-    <div class="field-row"><label>Comentarios</label><textarea id="f-comentarios" placeholder="Notas adicionales…"></textarea></div>
+    <div class="fr"><label>GIF / NIF <span class="req">*</span></label><input type="text" id="f-nif" placeholder="B12345678"></div>
+    <div class="fr"><label>TLF de contacto <span class="req">*</span></label><input type="tel" id="f-tlf" placeholder="+34 600 000 000"></div>
+    <div class="fr"><label>Email de contacto <span class="req">*</span></label><input type="email" id="f-email" placeholder="colaborador@email.com"></div>
+    <div class="fr"><label>Dirección <span class="req">*</span></label><input type="text" id="f-dir" placeholder="Calle Mayor 1, Marbella"></div>
+    <div class="fr"><label>Comentarios</label><textarea id="f-comentarios" placeholder="Notas adicionales…"></textarea></div>
   </div>
-
-  <!-- Cantidad -->
-  <div class="section-card">
-    <div class="section-title">¿Cuántos conductores y vehículos?</div>
+  <div class="card">
+    <div class="card-title">¿Cuántos conductores y vehículos?</div>
     <div class="qty-row">
       <div class="qty-field">
         <label>Conductores</label>
         <div class="qty-picker">
-          <button onclick="changeQty('conductores',-1)">−</button>
+          <button class="qty-btn" onclick="changeQty('conductores',-1)">−</button>
           <div class="qty-val" id="val-conductores">1</div>
-          <button onclick="changeQty('conductores',1)">+</button>
+          <button class="qty-btn" onclick="changeQty('conductores',1)">+</button>
         </div>
       </div>
       <div class="qty-field">
         <label>Vehículos</label>
         <div class="qty-picker">
-          <button onclick="changeQty('vehiculos',-1)">−</button>
+          <button class="qty-btn" onclick="changeQty('vehiculos',-1)">−</button>
           <div class="qty-val" id="val-vehiculos">1</div>
-          <button onclick="changeQty('vehiculos',1)">+</button>
+          <button class="qty-btn" onclick="changeQty('vehiculos',1)">+</button>
         </div>
       </div>
     </div>
   </div>
-
   <div id="conductores-wrap"></div>
   <div id="vehiculos-wrap"></div>
-
   <button class="btn-submit" id="btn-submit" onclick="submitForm()">Guardar registro →</button>
-  <div class="success-msg" id="success-msg">✅ Registro enviado correctamente. ¡Gracias!</div>
-  <div class="error-msg" id="error-msg">❌ Error al enviar. Inténtalo de nuevo.</div>
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-label">Subiendo archivos a Google Drive…</div>
+    <div class="progress-bar-bg"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="progress-step" id="progress-step">Preparando…</div>
+  </div>
+  <div class="msg ok" id="msg-ok">✅ Registro enviado correctamente. ¡Gracias!</div>
+  <div class="msg err" id="msg-err">❌ Error al enviar. Inténtalo de nuevo.</div>
 </div>
 </div>
 
-<!-- ══ ADMIN LOGIN ══ -->
+<!-- ADMIN -->
 <div id="view-admin" class="view">
 <div class="login-wrap">
   <div class="login-card">
@@ -247,442 +222,449 @@
     <p>Solo para uso interno de MoMo Transfers</p>
     <input type="password" id="admin-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkLogin()">
     <button onclick="checkLogin()">Entrar</button>
-    <div class="login-error" id="login-error">Contraseña incorrecta</div>
+    <div class="login-err" id="login-err">Contraseña incorrecta</div>
   </div>
 </div>
 </div>
 
-<!-- ══ FICHAS ══ -->
+<!-- FICHAS -->
 <div id="view-fichas" class="view">
 <div class="fichas-wrap">
-  <div class="fichas-header">
+  <div class="fichas-top">
     <h2>Colaboradores registrados</h2>
     <div class="fichas-actions">
-      <button class="btn-refresh" onclick="loadFichas()">↻ Actualizar</button>
-      <span class="fichas-count" id="fichas-count">0</span>
-      <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+      <button class="btn-sm" onclick="loadFichas()">↻ Actualizar</button>
+      <span class="badge" id="badge">0</span>
+      <button class="btn-sm danger" onclick="logout()">Cerrar sesión</button>
     </div>
   </div>
-  <div id="fichas-loading" class="loading-spinner">Cargando colaboradores…</div>
-  <div id="empty-state" class="empty-state" style="display:none">
-    <div class="empty-icon">📋</div>
-    <p>Aún no hay colaboradores registrados.</p>
-  </div>
-  <div class="fichas-grid" id="fichas-grid"></div>
+  <div id="spinner" class="spinner">Cargando colaboradores…</div>
+  <div id="empty" class="empty" style="display:none"><div class="ei">📋</div><p>Aún no hay colaboradores registrados.</p></div>
+  <div class="grid" id="fichas-grid"></div>
 </div>
 </div>
 
-<!-- ══ MODAL ══ -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="modal-content"></div>
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal"></div>
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwxHPpD65WAeEfUimy0FpfOodhMcW5fY4OWTH_RaZmH9hexSZorlkseT6qu_TJX4OF/exec';
-const ADMIN_PASS = 'momo2024';
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwxHPpD65WAeEfUimy0FpfOodhMcW5fY4OWTH_RaZmH9hexSZorlkseT6qu_TJX4OF/exec';
+var ADMIN_PASS = 'momo2024';
+var qtys = { conductores: 1, vehiculos: 1 };
+var fileMap = {};
+var colaboradores = [];
 
-let qtys = { conductores: 1, vehiculos: 1 };
-let photoDataMap = {}; // { 'c1-foto': dataURL, 'c1-carnet-front': dataURL, 'c1-carnet-back': dataURL }
-let colaboradores = [];
-
-renderBlocks();
+window.onload = function() {
+  renderConductores();
+  renderVehiculos();
+};
 
 function changeQty(key, delta) {
-  qtys[key] = Math.max(1, Math.min(6, qtys[key] + delta));
-  document.getElementById('val-' + key).textContent = qtys[key];
-  renderBlocks();
+  var n = qtys[key] + delta;
+  if (n < 1) n = 1;
+  if (n > 6) n = 6;
+  qtys[key] = n;
+  document.getElementById('val-' + key).textContent = n;
+  if (key === 'conductores') renderConductores();
+  else renderVehiculos();
 }
 
-function renderBlocks() { renderConductores(); renderVehiculos(); }
-
 function renderConductores() {
-  const wrap = document.getElementById('conductores-wrap');
-  wrap.innerHTML = '';
-  for (let i = 1; i <= qtys.conductores; i++) {
-    wrap.innerHTML += `
-    <div class="repeat-block">
-      <div class="repeat-block-header"><div class="block-num">${i}</div><h3>Conductor ${i}</h3></div>
-      <div class="repeat-block-body">
-
-        <div class="field-row"><label>Nombre completo <span class="req">*</span></label><input type="text" id="c${i}-nombre" placeholder="Nombre del conductor"></div>
-        <div class="field-row"><label>Número de licencia <span class="req">*</span></label><input type="text" id="c${i}-licencia" placeholder="VTC-00000"></div>
-        <div class="two-col">
-          <div class="field-row"><label>TLF de contacto <span class="req">*</span></label><input type="tel" id="c${i}-tlf" placeholder="+34 600 000 000"></div>
-          <div class="field-row"><label>Email</label><input type="email" id="c${i}-email" placeholder="conductor@email.com"></div>
-        </div>
-
-        <div class="subsection-label">📷 Foto del conductor</div>
-        <div class="field-row">
-          <label>Foto frontal (chaqueta/corbata oscura, camisa blanca) <span class="req">*</span></label>
-          <div class="photo-upload-box" id="photo-box-c${i}-foto">
-            <input type="file" accept="image/*" onchange="handlePhoto(event,'c${i}-foto')">
-            <div class="upload-icon">📷</div>
-            <p>Haz clic para subir foto</p>
-            <img class="photo-preview-img" id="preview-c${i}-foto" alt="">
-          </div>
-        </div>
-
-        <div class="subsection-label">🪪 Carnet de conducir</div>
-        <div class="carnet-row">
-          <div class="field-row">
-            <label>Delantera <span class="req">*</span></label>
-            <div class="photo-upload-box" id="photo-box-c${i}-carnet-front">
-              <input type="file" accept="image/*" onchange="handlePhoto(event,'c${i}-carnet-front')">
-              <div class="upload-icon">🪪</div>
-              <p>Parte delantera</p>
-              <img class="photo-preview-img" id="preview-c${i}-carnet-front" alt="">
-            </div>
-          </div>
-          <div class="field-row">
-            <label>Trasera <span class="req">*</span></label>
-            <div class="photo-upload-box" id="photo-box-c${i}-carnet-back">
-              <input type="file" accept="image/*" onchange="handlePhoto(event,'c${i}-carnet-back')">
-              <div class="upload-icon">🪪</div>
-              <p>Parte trasera</p>
-              <img class="photo-preview-img" id="preview-c${i}-carnet-back" alt="">
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>`;
+  var wrap = document.getElementById('conductores-wrap');
+  var html = '';
+  for (var i = 1; i <= qtys.conductores; i++) {
+    html += '<div class="block">' +
+      '<div class="block-head"><div class="block-num">' + i + '</div><h3>Conductor ' + i + '</h3></div>' +
+      '<div class="block-body">' +
+        '<div class="fr"><label>Nombre completo <span class="req">*</span></label><input type="text" id="c' + i + '-nombre" placeholder="Nombre del conductor"></div>' +
+        '<div class="fr"><label>Número de licencia <span class="req">*</span></label><input type="text" id="c' + i + '-licencia" placeholder="VTC-00000"></div>' +
+        '<div class="two-col">' +
+          '<div class="fr"><label>TLF <span class="req">*</span></label><input type="tel" id="c' + i + '-tlf" placeholder="+34 600 000 000"></div>' +
+          '<div class="fr"><label>Email</label><input type="email" id="c' + i + '-email" placeholder="conductor@email.com"></div>' +
+        '</div>' +
+        '<div class="sublabel">Foto del conductor</div>' +
+        '<div class="fr"><label>Foto frontal (chaqueta oscura, camisa blanca) <span class="req">*</span></label>' +
+          '<div class="upload-box" id="box-c' + i + '-foto">' +
+            '<input type="file" accept="image/*" onchange="handlePhoto(event,\'c' + i + '-foto\')">' +
+            '<div class="upload-icon">📷</div><p>Haz clic para subir foto</p>' +
+            '<img class="photo-preview" id="prev-c' + i + '-foto">' +
+          '</div></div>' +
+        '<div class="sublabel">Carnet de conducir</div>' +
+        '<div class="carnet-row">' +
+          '<div class="fr"><label>Delantera <span class="req">*</span></label>' +
+            '<div class="upload-box" id="box-c' + i + '-front">' +
+              '<input type="file" accept="image/*" onchange="handlePhoto(event,\'c' + i + '-front\')">' +
+              '<div class="upload-icon">🪪</div><p>Parte delantera</p>' +
+              '<img class="photo-preview" id="prev-c' + i + '-front">' +
+            '</div></div>' +
+          '<div class="fr"><label>Trasera <span class="req">*</span></label>' +
+            '<div class="upload-box" id="box-c' + i + '-back">' +
+              '<input type="file" accept="image/*" onchange="handlePhoto(event,\'c' + i + '-back\')">' +
+              '<div class="upload-icon">🪪</div><p>Parte trasera</p>' +
+              '<img class="photo-preview" id="prev-c' + i + '-back">' +
+            '</div></div>' +
+        '</div>' +
+      '</div></div>';
   }
+  wrap.innerHTML = html;
 }
 
 function renderVehiculos() {
-  const wrap = document.getElementById('vehiculos-wrap');
-  wrap.innerHTML = '';
-  for (let i = 1; i <= qtys.vehiculos; i++) {
-    wrap.innerHTML += `
-    <div class="repeat-block">
-      <div class="repeat-block-header"><div class="block-num">${i}</div><h3>Vehículo ${i}</h3></div>
-      <div class="repeat-block-body">
-        <div class="two-col">
-          <div class="field-row"><label>Modelo y año</label><input type="text" id="v${i}-modelo" placeholder="Mercedes Clase E 2022"></div>
-          <div class="field-row"><label>Matrícula</label><input type="text" id="v${i}-matricula" placeholder="0000 ABC"></div>
-        </div>
-        <div class="field-row"><label>Comentarios</label><textarea id="v${i}-comentarios" placeholder="Notas sobre el vehículo…" style="min-height:60px"></textarea></div>
-
-        <div class="subsection-label">📄 Documentos del vehículo</div>
-        <div class="doc-upload-grid">
-          <div class="field-row">
-            <label>Vehicle for Hire Permit (VTC) <span class="req">*</span></label>
-            <div class="doc-upload-box" id="doc-box-v${i}-vtc">
-              <input type="file" accept="image/*,application/pdf" onchange="handleDoc(event,'v${i}-vtc')">
-              <div class="doc-icon">📋</div>
-              <p>PDF o imagen</p>
-              <span class="doc-name" id="doc-name-v${i}-vtc"></span>
-            </div>
-          </div>
-          <div class="field-row">
-            <label>Permiso de circulación <span class="req">*</span></label>
-            <div class="doc-upload-box" id="doc-box-v${i}-permiso">
-              <input type="file" accept="image/*,application/pdf" onchange="handleDoc(event,'v${i}-permiso')">
-              <div class="doc-icon">📋</div>
-              <p>PDF o imagen</p>
-              <span class="doc-name" id="doc-name-v${i}-permiso"></span>
-            </div>
-          </div>
-          <div class="field-row">
-            <label>ITV (Vehicle Inspection) <span class="req">*</span></label>
-            <div class="doc-upload-box" id="doc-box-v${i}-itv">
-              <input type="file" accept="image/*,application/pdf" onchange="handleDoc(event,'v${i}-itv')">
-              <div class="doc-icon">📋</div>
-              <p>PDF o imagen</p>
-              <span class="doc-name" id="doc-name-v${i}-itv"></span>
-            </div>
-          </div>
-          <div class="field-row">
-            <label>Seguro (Vehicle Insurance) <span class="req">*</span></label>
-            <div class="doc-upload-box" id="doc-box-v${i}-seguro">
-              <input type="file" accept="image/*,application/pdf" onchange="handleDoc(event,'v${i}-seguro')">
-              <div class="doc-icon">📋</div>
-              <p>PDF o imagen</p>
-              <span class="doc-name" id="doc-name-v${i}-seguro"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
+  var wrap = document.getElementById('vehiculos-wrap');
+  var html = '';
+  for (var i = 1; i <= qtys.vehiculos; i++) {
+    html += '<div class="block">' +
+      '<div class="block-head"><div class="block-num">' + i + '</div><h3>Vehículo ' + i + '</h3></div>' +
+      '<div class="block-body">' +
+        '<div class="two-col">' +
+          '<div class="fr"><label>Modelo y año</label><input type="text" id="v' + i + '-modelo" placeholder="Mercedes Clase E 2022"></div>' +
+          '<div class="fr"><label>Matrícula</label><input type="text" id="v' + i + '-matricula" placeholder="0000 ABC"></div>' +
+        '</div>' +
+        '<div class="fr"><label>Comentarios</label><textarea id="v' + i + '-comentarios" placeholder="Notas…" style="min-height:60px"></textarea></div>' +
+        '<div class="sublabel">Documentos del vehículo</div>' +
+        '<div class="doc-grid">' +
+          makeDocBox('v' + i + '-vtc', 'Vehicle for Hire Permit (VTC)') +
+          makeDocBox('v' + i + '-permiso', 'Permiso de circulación') +
+          makeDocBox('v' + i + '-itv', 'ITV') +
+          makeDocBox('v' + i + '-seguro', 'Seguro') +
+        '</div>' +
+      '</div></div>';
   }
+  wrap.innerHTML = html;
 }
 
-// Comprime imagen a max 1200px y calidad 0.8
-function compressImage(file, maxSize, quality) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        let w = img.width, h = img.height;
-        if (w > maxSize || h > maxSize) {
-          if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
-          else { w = Math.round(w * maxSize / h); h = maxSize; }
-        }
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', quality));
-      };
-      img.src = ev.target.result;
+function makeDocBox(key, label) {
+  return '<div class="fr"><label>' + label + ' <span class="req">*</span></label>' +
+    '<div class="doc-box" id="box-' + key + '">' +
+      '<input type="file" accept="image/*,application/pdf" onchange="handleDoc(event,\'' + key + '\')">' +
+      '<div class="doc-icon">📋</div><p>PDF o imagen</p>' +
+      '<span class="doc-name" id="doc-name-' + key + '"></span>' +
+    '</div></div>';
+}
+
+function compressImage(file, maxSize, quality, callback) {
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var w = img.width, h = img.height;
+      if (w > maxSize || h > maxSize) {
+        if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+        else { w = Math.round(w * maxSize / h); h = maxSize; }
+      }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handlePhoto(e, key) {
+  var file = e.target.files[0];
+  if (!file) return;
+  compressImage(file, 1200, 0.82, function(data) {
+    fileMap[key] = { data: data, name: key + '.jpg', type: 'image/jpeg' };
+    var prev = document.getElementById('prev-' + key);
+    prev.src = data;
+    prev.style.display = 'block';
+    var box = document.getElementById('box-' + key);
+    box.querySelector('.upload-icon').style.display = 'none';
+    box.querySelector('p').style.display = 'none';
+  });
+}
+
+function handleDoc(e, key) {
+  var file = e.target.files[0];
+  if (!file) return;
+  if (file.type === 'application/pdf') {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      fileMap[key] = { data: ev.target.result, name: file.name, type: 'application/pdf' };
+      showDocDone(key, file.name, '📄');
     };
     reader.readAsDataURL(file);
-  });
-}
-
-function readAsBase64(file) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = ev => resolve(ev.target.result);
-    reader.readAsDataURL(file);
-  });
-}
-
-async function handlePhoto(e, key) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const compressed = await compressImage(file, 1200, 0.82);
-  photoDataMap[key] = compressed;
-  const preview = document.getElementById('preview-' + key);
-  preview.src = compressed;
-  preview.style.display = 'block';
-  const box = document.getElementById('photo-box-' + key);
-  box.querySelector('.upload-icon').style.display = 'none';
-  box.querySelector('p').style.display = 'none';
-}
-
-async function handleDoc(e, key) {
-  const file = e.target.files[0];
-  if (!file) return;
-  let data;
-  if (file.type === 'application/pdf') {
-    data = await readAsBase64(file);
   } else {
-    data = await compressImage(file, 1600, 0.85);
+    compressImage(file, 1600, 0.85, function(data) {
+      fileMap[key] = { data: data, name: file.name, type: 'image/jpeg' };
+      showDocDone(key, file.name, '🖼️');
+    });
   }
-  photoDataMap[key] = { data, name: file.name, type: file.type };
-  const nameEl = document.getElementById('doc-name-' + key);
-  nameEl.textContent = '✅ ' + file.name;
-  nameEl.classList.add('visible');
-  const box = document.getElementById('doc-box-' + key);
-  box.querySelector('.doc-icon').textContent = file.type === 'application/pdf' ? '📄' : '🖼️';
+}
+
+function showDocDone(key, name, icon) {
+  var nameEl = document.getElementById('doc-name-' + key);
+  nameEl.textContent = '✅ ' + name;
+  nameEl.classList.add('show');
+  var box = document.getElementById('box-' + key);
+  box.querySelector('.doc-icon').textContent = icon;
   box.querySelector('p').style.display = 'none';
   box.style.borderColor = 'var(--green)';
 }
 
+function setProgress(step, total, label) {
+  document.getElementById('progress-bar').style.width = Math.round((step / total) * 100) + '%';
+  document.getElementById('progress-step').textContent = label;
+}
 
-  const nombre = document.getElementById('f-nombre').value.trim();
-  const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
-  const nif = document.getElementById('f-nif').value.trim();
-  const tlf = document.getElementById('f-tlf').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const dir = document.getElementById('f-dir').value.trim();
-  if (!nombre || !tipo || !nif || !tlf || !email || !dir) {
-    alert('Por favor completa todos los campos obligatorios del colaborador.');
+function uploadFile(fileObj, colaborador, subfolder, filename) {
+  return fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type: 'upload',
+      colaborador: colaborador,
+      subfolder: subfolder,
+      fileData: fileObj.data,
+      fileName: filename
+    })
+  }).then(function(r) { return r.json(); }).then(function(res) {
+    return res.url || '';
+  });
+}
+
+function val(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function submitForm() {
+  var nombre = val('f-nombre');
+  var tipoEl = document.querySelector('input[name="tipo"]:checked');
+  var nif = val('f-nif');
+  var tlf = val('f-tlf');
+  var email = val('f-email');
+  var dir = val('f-dir');
+  if (!nombre || !tipoEl || !nif || !tlf || !email || !dir) {
+    alert('Por favor completa todos los campos obligatorios.');
     return;
   }
 
-  const conductores = [];
-  for (let i = 1; i <= qtys.conductores; i++) {
-    conductores.push({
-      nombre: document.getElementById(`c${i}-nombre`)?.value.trim() || '',
-      licencia: document.getElementById(`c${i}-licencia`)?.value.trim() || '',
-      tlf: document.getElementById(`c${i}-tlf`)?.value.trim() || '',
-      email: document.getElementById(`c${i}-email`)?.value.trim() || '',
-      foto: photoDataMap[`c${i}-foto`] || null,
-      carnetFront: photoDataMap[`c${i}-carnet-front`] || null,
-      carnetBack: photoDataMap[`c${i}-carnet-back`] || null,
+  var btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+  document.getElementById('progress-wrap').style.display = 'block';
+  document.getElementById('msg-ok').style.display = 'none';
+  document.getElementById('msg-err').style.display = 'none';
+
+  var colaboradorNombre = nombre + ' - ' + nif;
+
+  // Construir lista de uploads a hacer
+  var uploads = [];
+  for (var i = 1; i <= qtys.conductores; i++) {
+    var cNombre = val('c' + i + '-nombre') || ('Conductor ' + i);
+    var subfolder = 'Conductores/' + cNombre;
+    if (fileMap['c' + i + '-foto']) uploads.push({ key: 'c' + i + '-foto', subfolder: subfolder, filename: 'foto_conductor.jpg', target: 'conductor', idx: i-1, field: 'fotoUrl' });
+    if (fileMap['c' + i + '-front']) uploads.push({ key: 'c' + i + '-front', subfolder: subfolder, filename: 'carnet_frontal.jpg', target: 'conductor', idx: i-1, field: 'carnetFrontUrl' });
+    if (fileMap['c' + i + '-back']) uploads.push({ key: 'c' + i + '-back', subfolder: subfolder, filename: 'carnet_trasero.jpg', target: 'conductor', idx: i-1, field: 'carnetBackUrl' });
+  }
+  for (var j = 1; j <= qtys.vehiculos; j++) {
+    var mat = val('v' + j + '-matricula') || ('Vehiculo ' + j);
+    var vsubfolder = 'Vehiculos/' + mat;
+    if (fileMap['v' + j + '-vtc']) uploads.push({ key: 'v' + j + '-vtc', subfolder: vsubfolder, filename: 'vtc.pdf', target: 'vehiculo', idx: j-1, field: 'vtcUrl' });
+    if (fileMap['v' + j + '-permiso']) uploads.push({ key: 'v' + j + '-permiso', subfolder: vsubfolder, filename: 'permiso_circulacion.pdf', target: 'vehiculo', idx: j-1, field: 'permisoUrl' });
+    if (fileMap['v' + j + '-itv']) uploads.push({ key: 'v' + j + '-itv', subfolder: vsubfolder, filename: 'itv.pdf', target: 'vehiculo', idx: j-1, field: 'itvUrl' });
+    if (fileMap['v' + j + '-seguro']) uploads.push({ key: 'v' + j + '-seguro', subfolder: vsubfolder, filename: 'seguro.pdf', target: 'vehiculo', idx: j-1, field: 'seguroUrl' });
+  }
+
+  // Datos base conductores y vehiculos
+  var conductores = [];
+  for (var ci = 1; ci <= qtys.conductores; ci++) {
+    conductores.push({ nombre: val('c'+ci+'-nombre'), licencia: val('c'+ci+'-licencia'), tlf: val('c'+ci+'-tlf'), email: val('c'+ci+'-email'), fotoUrl:'', carnetFrontUrl:'', carnetBackUrl:'' });
+  }
+  var vehiculos = [];
+  for (var vi = 1; vi <= qtys.vehiculos; vi++) {
+    vehiculos.push({ modelo: val('v'+vi+'-modelo'), matricula: val('v'+vi+'-matricula'), comentarios: val('v'+vi+'-comentarios'), vtcUrl:'', permisoUrl:'', itvUrl:'', seguroUrl:'' });
+  }
+
+  var total = uploads.length + 1;
+  var step = 0;
+
+  function uploadNext(idx) {
+    if (idx >= uploads.length) {
+      // Todos los archivos subidos, ahora enviar registro
+      setProgress(uploads.length, total, 'Guardando registro…');
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'registro',
+          nombre: nombre, tipo: tipoEl.value, nif: nif, tlf: tlf,
+          email: email, dir: dir, comentarios: val('f-comentarios'),
+          conductores: conductores, vehiculos: vehiculos
+        })
+      }).then(function() {
+        setProgress(total, total, '¡Completado!');
+        setTimeout(function() {
+          document.getElementById('progress-wrap').style.display = 'none';
+          document.getElementById('msg-ok').style.display = 'block';
+          setTimeout(function() { document.getElementById('msg-ok').style.display = 'none'; }, 5000);
+          resetForm();
+        }, 800);
+      }).catch(function() {
+        document.getElementById('msg-err').style.display = 'block';
+      }).finally(function() {
+        btn.disabled = false; btn.textContent = 'Guardar registro →';
+      });
+      return;
+    }
+
+    var u = uploads[idx];
+    setProgress(idx, total, 'Subiendo ' + u.filename + '…');
+    uploadFile(fileMap[u.key], colaboradorNombre, u.subfolder, u.filename).then(function(url) {
+      if (u.target === 'conductor') conductores[u.idx][u.field] = url;
+      else vehiculos[u.idx][u.field] = url;
+      uploadNext(idx + 1);
+    }).catch(function() {
+      uploadNext(idx + 1); // continuar aunque falle uno
     });
   }
 
-  const vehiculos = [];
-  for (let i = 1; i <= qtys.vehiculos; i++) {
-    vehiculos.push({
-      modelo: document.getElementById(`v${i}-modelo`)?.value.trim() || '',
-      matricula: document.getElementById(`v${i}-matricula`)?.value.trim() || '',
-      comentarios: document.getElementById(`v${i}-comentarios`)?.value.trim() || '',
-      docVtc: photoDataMap[`v${i}-vtc`] || null,
-      docPermiso: photoDataMap[`v${i}-permiso`] || null,
-      docItv: photoDataMap[`v${i}-itv`] || null,
-      docSeguro: photoDataMap[`v${i}-seguro`] || null,
-    });
-  }
-
-  const payload = {
-    nombre, tipo, nif, tlf, email,
-    dir, comentarios: document.getElementById('f-comentarios').value.trim(),
-    conductores, vehiculos
-  };
-
-  const btn = document.getElementById('btn-submit');
-  btn.disabled = true; btn.textContent = 'Enviando…';
-
-  try {
-    await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-    // reset
-    ['f-nombre','f-nif','f-tlf','f-email','f-dir','f-comentarios'].forEach(id => document.getElementById(id).value = '');
-    document.querySelectorAll('input[name="tipo"]').forEach(r => r.checked = false);
-    qtys = { conductores: 1, vehiculos: 1 };
-    document.getElementById('val-conductores').textContent = 1;
-    document.getElementById('val-vehiculos').textContent = 1;
-    photoDataMap = {};
-    renderBlocks();
-    document.getElementById('success-msg').style.display = 'block';
-    setTimeout(() => document.getElementById('success-msg').style.display = 'none', 4000);
-  } catch(err) {
-    document.getElementById('error-msg').style.display = 'block';
-    setTimeout(() => document.getElementById('error-msg').style.display = 'none', 4000);
-  }
-  btn.disabled = false; btn.textContent = 'Guardar registro →';
+  uploadNext(0);
 }
 
-// ── ADMIN ──
+function resetForm() {
+  document.getElementById('f-nombre').value = '';
+  document.getElementById('f-nif').value = '';
+  document.getElementById('f-tlf').value = '';
+  document.getElementById('f-email').value = '';
+  document.getElementById('f-dir').value = '';
+  document.getElementById('f-comentarios').value = '';
+  document.querySelectorAll('input[name="tipo"]').forEach(function(r) { r.checked = false; });
+  qtys = { conductores: 1, vehiculos: 1 };
+  document.getElementById('val-conductores').textContent = 1;
+  document.getElementById('val-vehiculos').textContent = 1;
+  fileMap = {};
+  renderConductores();
+  renderVehiculos();
+}
+
 function checkLogin() {
   if (document.getElementById('admin-pass').value === ADMIN_PASS) {
-    document.getElementById('login-error').style.display = 'none';
+    document.getElementById('login-err').style.display = 'none';
     document.getElementById('tab-fichas').classList.remove('hidden');
     switchView('fichas');
     loadFichas();
   } else {
-    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-err').style.display = 'block';
   }
 }
+
 function logout() {
   document.getElementById('tab-fichas').classList.add('hidden');
   document.getElementById('admin-pass').value = '';
   switchView('formulario');
 }
 
-async function loadFichas() {
-  document.getElementById('fichas-loading').style.display = 'block';
+function loadFichas() {
+  document.getElementById('spinner').style.display = 'block';
   document.getElementById('fichas-grid').innerHTML = '';
-  document.getElementById('empty-state').style.display = 'none';
-  try {
-    const res = await fetch(SCRIPT_URL);
-    colaboradores = await res.json();
+  document.getElementById('empty').style.display = 'none';
+  fetch(SCRIPT_URL).then(function(r) { return r.json(); }).then(function(data) {
+    colaboradores = data;
     renderFichas();
-  } catch(e) {
-    document.getElementById('fichas-loading').textContent = 'Error al cargar. Pulsa Actualizar.';
-  }
+  }).catch(function() {
+    document.getElementById('spinner').textContent = 'Error al cargar. Pulsa Actualizar.';
+  });
 }
 
 function renderFichas() {
-  document.getElementById('fichas-loading').style.display = 'none';
-  const grid = document.getElementById('fichas-grid');
-  const count = document.getElementById('fichas-count');
-  count.textContent = colaboradores.length + ' colaborador' + (colaboradores.length !== 1 ? 'es' : '');
-  if (colaboradores.length === 0) { document.getElementById('empty-state').style.display = 'block'; grid.innerHTML = ''; return; }
-
-  grid.innerHTML = colaboradores.map((c, idx) => {
-    const foto = c.conductores?.[0]?.fotoUrl || c.conductores?.[0]?.foto;
-    const avatarHTML = foto ? `<div class="ficha-avatar"><img src="${foto}" onerror="this.parentElement.innerHTML='👤'"></div>` : `<div class="ficha-avatar">👤</div>`;
-    const pillsCond = (c.conductores||[]).map(cd => `<span class="ficha-pill">${cd.nombre||'Conductor'}</span>`).join('');
-    const pillsVeh = (c.vehiculos||[]).map(v => `<span class="ficha-pill gold">${v.matricula||v.modelo||'Vehículo'}</span>`).join('');
-    const fecha = c.fecha ? new Date(c.fecha).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}) : '—';
-    return `<div class="ficha-card" onclick="openModal(${idx})">
-      <div class="ficha-card-top">${avatarHTML}<div><div class="ficha-card-name">${c.nombre}</div><div class="ficha-card-tipo">${c.tipo} · ${c.nif}</div></div></div>
-      <div class="ficha-card-body">
-        <div class="ficha-pill-row">${pillsCond}</div>
-        <div class="ficha-pill-row">${pillsVeh}</div>
-        <div class="ficha-meta">${fecha} · ${(c.conductores||[]).length} conductor(es) · ${(c.vehiculos||[]).length} vehículo(s)</div>
-      </div>
-    </div>`;
-  }).join('');
+  document.getElementById('spinner').style.display = 'none';
+  var grid = document.getElementById('fichas-grid');
+  document.getElementById('badge').textContent = colaboradores.length + ' colaborador' + (colaboradores.length !== 1 ? 'es' : '');
+  if (colaboradores.length === 0) { document.getElementById('empty').style.display = 'block'; grid.innerHTML = ''; return; }
+  var html = '';
+  for (var i = 0; i < colaboradores.length; i++) {
+    var c = colaboradores[i];
+    var foto = (c.conductores && c.conductores[0]) ? (c.conductores[0].fotoUrl || '') : '';
+    var av = foto ? '<div class="avatar"><img src="' + foto + '" onerror="this.parentElement.innerHTML=\'👤\'"></div>' : '<div class="avatar">👤</div>';
+    var pc = (c.conductores||[]).map(function(cd) { return '<span class="pill">' + (cd.nombre||'Conductor') + '</span>'; }).join('');
+    var pv = (c.vehiculos||[]).map(function(v) { return '<span class="pill gold">' + (v.matricula||v.modelo||'Vehículo') + '</span>'; }).join('');
+    var fecha = c.fecha ? new Date(c.fecha).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+    html += '<div class="fcard" onclick="openModal(' + i + ')">' +
+      '<div class="fcard-top">' + av + '<div><div class="fcard-name">' + c.nombre + '</div><div class="fcard-tipo">' + c.tipo + ' · ' + c.nif + '</div></div></div>' +
+      '<div class="fcard-body"><div class="pill-row">' + pc + '</div><div class="pill-row">' + pv + '</div>' +
+      '<div class="fcard-meta">' + fecha + ' · ' + (c.conductores||[]).length + ' conductor(es) · ' + (c.vehiculos||[]).length + ' vehículo(s)</div></div>' +
+    '</div>';
+  }
+  grid.innerHTML = html;
 }
 
 function openModal(idx) {
-  const c = colaboradores[idx];
-  const foto = c.conductores?.[0]?.fotoUrl || c.conductores?.[0]?.foto;
-  const avatarHTML = foto ? `<div class="modal-avatar"><img src="${foto}" onerror="this.parentElement.innerHTML='👤'"></div>` : `<div class="modal-avatar">👤</div>`;
-  const fecha = c.fecha ? new Date(c.fecha).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  var c = colaboradores[idx];
+  var foto = (c.conductores && c.conductores[0]) ? (c.conductores[0].fotoUrl || '') : '';
+  var av = foto ? '<div class="mavatar"><img src="' + foto + '" onerror="this.parentElement.innerHTML=\'👤\'"></div>' : '<div class="mavatar">👤</div>';
+  var fecha = c.fecha ? new Date(c.fecha).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}) : '—';
 
-  const conductoresHTML = (c.conductores||[]).map((cd,i) => {
-    const fotos = [];
-    const fotoUrl = cd.fotoUrl || cd.foto;
-    const frontUrl = cd.carnetFrontUrl || cd.carnetFront;
-    const backUrl = cd.carnetBackUrl || cd.carnetBack;
-    if (fotoUrl) fotos.push(`<div class="conductor-foto-item"><img src="${fotoUrl}" onerror="this.src=''"><span>Foto</span></div>`);
-    if (frontUrl) fotos.push(`<div class="conductor-foto-item"><img src="${frontUrl}" onerror="this.src=''"><span>Carnet (front)</span></div>`);
-    if (backUrl) fotos.push(`<div class="conductor-foto-item"><img src="${backUrl}" onerror="this.src=''"><span>Carnet (back)</span></div>`);
-    return `<div class="sub-block">
-      <div class="sub-block-title">Conductor ${i+1}</div>
-      ${fotos.length ? `<div class="conductor-foto-row">${fotos.join('')}</div>` : ''}
-      <div class="modal-grid">
-        <div class="modal-field"><label>Nombre</label><p>${cd.nombre||'—'}</p></div>
-        <div class="modal-field"><label>Nº Licencia</label><p>${cd.licencia||'—'}</p></div>
-        <div class="modal-field"><label>Teléfono</label><p>${cd.tlf||'—'}</p></div>
-        <div class="modal-field"><label>Email</label><p>${cd.email||'—'}</p></div>
-      </div>
-    </div>`;
-  }).join('');
+  var cHTML = '';
+  for (var i = 0; i < (c.conductores||[]).length; i++) {
+    var cd = c.conductores[i];
+    var fotos = '';
+    if (cd.fotoUrl) fotos += '<div class="foto-item"><img src="' + cd.fotoUrl + '" onerror="this.src=\'\'"><span>Foto</span></div>';
+    if (cd.carnetFrontUrl) fotos += '<div class="foto-item"><img src="' + cd.carnetFrontUrl + '" onerror="this.src=\'\'"><span>Carnet front</span></div>';
+    if (cd.carnetBackUrl) fotos += '<div class="foto-item"><img src="' + cd.carnetBackUrl + '" onerror="this.src=\'\'"><span>Carnet back</span></div>';
+    cHTML += '<div class="sub"><div class="sub-title">Conductor ' + (i+1) + '</div>' +
+      (fotos ? '<div class="foto-row">' + fotos + '</div>' : '') +
+      '<div class="mgrid">' +
+        '<div class="mfield"><label>Nombre</label><p>' + (cd.nombre||'—') + '</p></div>' +
+        '<div class="mfield"><label>Nº Licencia</label><p>' + (cd.licencia||'—') + '</p></div>' +
+        '<div class="mfield"><label>Teléfono</label><p>' + (cd.tlf||'—') + '</p></div>' +
+        '<div class="mfield"><label>Email</label><p>' + (cd.email||'—') + '</p></div>' +
+      '</div></div>';
+  }
 
-  const vehiculosHTML = (c.vehiculos||[]).map((v,i) => {
-    const docs = [
-      { label: 'VTC', url: v.vtcUrl, isPdf: v.vtcUrl && v.vtcUrl.includes('pdf') },
-      { label: 'Permiso circulación', url: v.permisoUrl, isPdf: v.permisoUrl && v.permisoUrl.includes('pdf') },
-      { label: 'ITV', url: v.itvUrl, isPdf: v.itvUrl && v.itvUrl.includes('pdf') },
-      { label: 'Seguro', url: v.seguroUrl, isPdf: v.seguroUrl && v.seguroUrl.includes('pdf') },
-    ].filter(d => d.url);
-    const docsHTML = docs.map(d =>
-      d.isPdf
-        ? `<a href="${d.url}" target="_blank" class="doc-pill">📄 ${d.label}</a>`
-        : `<div class="conductor-foto-item"><a href="${d.url}" target="_blank"><img src="${d.url}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1.5px solid var(--gray-200)" onerror="this.src=''"></a><span>${d.label}</span></div>`
-    ).join('');
-    return `<div class="sub-block">
-      <div class="sub-block-title">Vehículo ${i+1}</div>
-      <div class="modal-grid">
-        <div class="modal-field"><label>Modelo / Año</label><p>${v.modelo||'—'}</p></div>
-        <div class="modal-field"><label>Matrícula</label><p>${v.matricula||'—'}</p></div>
-        ${v.comentarios?`<div class="modal-field" style="grid-column:1/-1"><label>Comentarios</label><p>${v.comentarios}</p></div>`:''}
-      </div>
-      ${docs.length ? `<div class="sub-block-divider">Documentos</div><div class="conductor-foto-row" style="flex-wrap:wrap;gap:10px">${docsHTML}</div>` : ''}
-    </div>`;
-  }).join('');
+  var vHTML = '';
+  for (var j = 0; j < (c.vehiculos||[]).length; j++) {
+    var v = c.vehiculos[j];
+    var docs = '';
+    if (v.vtcUrl) docs += '<a href="' + v.vtcUrl + '" target="_blank" class="doc-pill">📄 VTC</a>';
+    if (v.permisoUrl) docs += '<a href="' + v.permisoUrl + '" target="_blank" class="doc-pill">📄 Permiso</a>';
+    if (v.itvUrl) docs += '<a href="' + v.itvUrl + '" target="_blank" class="doc-pill">📄 ITV</a>';
+    if (v.seguroUrl) docs += '<a href="' + v.seguroUrl + '" target="_blank" class="doc-pill">📄 Seguro</a>';
+    vHTML += '<div class="sub"><div class="sub-title">Vehículo ' + (j+1) + '</div>' +
+      '<div class="mgrid">' +
+        '<div class="mfield"><label>Modelo / Año</label><p>' + (v.modelo||'—') + '</p></div>' +
+        '<div class="mfield"><label>Matrícula</label><p>' + (v.matricula||'—') + '</p></div>' +
+        (v.comentarios ? '<div class="mfield" style="grid-column:1/-1"><label>Comentarios</label><p>' + v.comentarios + '</p></div>' : '') +
+      '</div>' +
+      (docs ? '<div class="sub-div">Documentos</div><div>' + docs + '</div>' : '') +
+    '</div>';
+  }
 
-  document.getElementById('modal-content').innerHTML = `
-    <div class="modal-head">
-      ${avatarHTML}
-      <div class="modal-head-info">
-        <h2>${c.nombre}</h2>
-        <div class="modal-tipo">${c.tipo} · ${c.nif}</div>
-        <div class="modal-fecha">Registrado el ${fecha}</div>
-      </div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-section">
-        <div class="modal-section-title">Datos del colaborador</div>
-        <div class="modal-grid">
-          <div class="modal-field"><label>Teléfono</label><p>${c.tlf}</p></div>
-          <div class="modal-field"><label>Email</label><p>${c.email}</p></div>
-          <div class="modal-field" style="grid-column:1/-1"><label>Dirección</label><p>${c.dir}</p></div>
-          ${c.comentarios?`<div class="modal-field" style="grid-column:1/-1"><label>Comentarios</label><p>${c.comentarios}</p></div>`:''}
-        </div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">Conductores (${(c.conductores||[]).length})</div>
-        ${conductoresHTML}
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">Vehículos (${(c.vehiculos||[]).length})</div>
-        ${vehiculosHTML}
-      </div>
-    </div>`;
+  document.getElementById('modal').innerHTML =
+    '<div class="modal-head">' + av +
+      '<div class="minfo"><h2>' + c.nombre + '</h2><div class="mtipo">' + c.tipo + ' · ' + c.nif + '</div><div class="mfecha">Registrado el ' + fecha + '</div></div>' +
+      '<button class="mclose" onclick="closeModal()">✕</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+      '<div class="msec"><div class="msec-title">Datos del colaborador</div><div class="mgrid">' +
+        '<div class="mfield"><label>Teléfono</label><p>' + c.tlf + '</p></div>' +
+        '<div class="mfield"><label>Email</label><p>' + c.email + '</p></div>' +
+        '<div class="mfield" style="grid-column:1/-1"><label>Dirección</label><p>' + c.dir + '</p></div>' +
+        (c.comentarios ? '<div class="mfield" style="grid-column:1/-1"><label>Comentarios</label><p>' + c.comentarios + '</p></div>' : '') +
+      '</div></div>' +
+      '<div class="msec"><div class="msec-title">Conductores (' + (c.conductores||[]).length + ')</div>' + cHTML + '</div>' +
+      '<div class="msec"><div class="msec-title">Vehículos (' + (c.vehiculos||[]).length + ')</div>' + vHTML + '</div>' +
+    '</div>';
 
-  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
 }
 
 function closeModal(e) {
-  if (!e || e.target === document.getElementById('modal-overlay'))
-    document.getElementById('modal-overlay').classList.remove('open');
+  if (!e || e.target === document.getElementById('overlay'))
+    document.getElementById('overlay').classList.remove('open');
 }
 
 function switchView(v) {
-  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(function(el) { el.classList.remove('active'); });
   document.getElementById('view-' + v).classList.add('active');
-  document.getElementById('tab-form').classList.toggle('active', v==='formulario');
-  document.getElementById('tab-fichas').classList.toggle('active', v==='fichas');
-  document.getElementById('tab-admin').classList.toggle('active', v==='admin');
+  document.getElementById('tab-form').classList.toggle('active', v === 'formulario');
+  document.getElementById('tab-fichas').classList.toggle('active', v === 'fichas');
+  document.getElementById('tab-admin').classList.toggle('active', v === 'admin');
 }
 </script>
 </body>
