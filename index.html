@@ -31,10 +31,11 @@ body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);mi
 .fr{margin-bottom:18px}.fr:last-child{margin-bottom:0}
 .fr label{display:block;font-size:13px;font-weight:500;color:var(--g800);margin-bottom:6px}
 .fr label .req{color:var(--red);margin-left:2px}
-.fr input[type=text],.fr input[type=email],.fr input[type=tel],.fr textarea{width:100%;padding:10px 14px;border:1.5px solid var(--g200);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--black);background:var(--white);outline:none;transition:border-color .15s}
+.fr input[type=text],.fr input[type=email],.fr input[type=tel],.fr input[type=number],.fr textarea{width:100%;padding:10px 14px;border:1.5px solid var(--g200);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--black);background:var(--white);outline:none;transition:border-color .15s}
 .fr input:focus,.fr textarea:focus{border-color:var(--gold)}
 .fr textarea{resize:vertical;min-height:80px}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .radio-group{display:flex;gap:12px;flex-wrap:wrap}
 .radio-opt{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:var(--g800);padding:8px 16px;border:1.5px solid var(--g200);border-radius:8px;transition:border-color .15s,background .15s}
 .radio-opt:has(input:checked){border-color:var(--gold);background:#fdf8ee}
@@ -50,28 +51,6 @@ body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);mi
 .block-num{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--black);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .block-head h3{font-size:14px;font-weight:600;color:var(--white)}
 .block-body{padding:20px}
-.sublabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--g400);margin:18px 0 10px;padding-top:14px;border-top:1px solid var(--g200)}
-.upload-box{border:2px dashed var(--g200);border-radius:10px;padding:20px;text-align:center;cursor:pointer;background:var(--g100);position:relative;transition:border-color .15s,background .15s}
-.upload-box:hover{border-color:var(--gold);background:#fdf8ee}
-.upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.upload-icon{font-size:24px;margin-bottom:4px}
-.upload-box p{font-size:12px;color:var(--g600)}
-.photo-preview{width:90px;height:90px;object-fit:cover;border-radius:8px;margin:8px auto 0;display:none;border:1.5px solid var(--g200)}
-.carnet-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.doc-box{border:2px dashed var(--g200);border-radius:10px;padding:16px 12px;text-align:center;cursor:pointer;background:var(--g100);position:relative;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:border-color .15s}
-.doc-box:hover{border-color:var(--gold);background:#fdf8ee}
-.doc-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.doc-icon{font-size:22px}
-.doc-box p{font-size:11px;color:var(--g600);margin:0}
-.doc-name{font-size:11px;color:var(--green);font-weight:600;word-break:break-all;display:none}
-.doc-name.show{display:block}
-/* progress */
-.progress-wrap{display:none;margin-top:16px;background:var(--white);border-radius:10px;padding:20px;border:1px solid var(--g200)}
-.progress-label{font-size:13px;font-weight:500;color:var(--g800);margin-bottom:10px;text-align:center}
-.progress-bar-bg{background:var(--g200);border-radius:20px;height:10px;overflow:hidden}
-.progress-bar{background:var(--gold);height:10px;border-radius:20px;width:0%;transition:width .3s}
-.progress-step{font-size:12px;color:var(--g600);margin-top:8px;text-align:center}
 .btn-submit{width:100%;padding:14px;background:var(--gold);color:var(--black);border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:.04em;transition:background .15s;margin-top:8px}
 .btn-submit:hover{background:var(--gold-light)}
 .btn-submit:disabled{opacity:.6;cursor:not-allowed}
@@ -101,46 +80,38 @@ body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);mi
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
 .fcard{background:var(--white);border-radius:14px;border:1px solid var(--g200);overflow:hidden;cursor:pointer;transition:box-shadow .15s,transform .15s}
 .fcard:hover{box-shadow:0 8px 32px rgba(0,0,0,.1);transform:translateY(-2px)}
-.fcard-top{background:var(--black);padding:20px;display:flex;align-items:center;gap:16px}
-.avatar{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;background:var(--g800);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--gold);overflow:hidden}
-.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.fcard-name{font-size:16px;font-weight:700;color:var(--white)}
-.fcard-tipo{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-top:2px}
-.fcard-body{padding:16px 20px}
+.fcard-top{background:var(--black);padding:20px 24px}
+.fcard-name{font-size:17px;font-weight:700;color:var(--white)}
+.fcard-empresa{font-size:12px;color:var(--g400);margin-top:2px}
+.fcard-tipo{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-top:4px}
+.fcard-body{padding:16px 24px}
 .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .pill{background:var(--g100);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:500;color:var(--g600)}
 .pill.gold{background:#fdf8ee;color:#7a5e1a}
 .fcard-meta{font-size:12px;color:var(--g400)}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto}
 .overlay.open{display:flex}
-.modal{background:var(--white);border-radius:16px;width:100%;max-width:760px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.3);margin:auto}
-.modal-head{background:var(--black);padding:28px 32px;display:flex;align-items:center;gap:20px}
-.mavatar{width:72px;height:72px;border-radius:50%;border:3px solid var(--gold);background:var(--g800);display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--gold);flex-shrink:0;overflow:hidden}
-.mavatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:720px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.3);margin:auto}
+.modal-head{background:var(--black);padding:28px 32px}
 .minfo h2{font-size:22px;font-weight:700;color:var(--white)}
-.minfo .mtipo{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-top:4px}
-.minfo .mfecha{font-size:12px;color:var(--g400);margin-top:4px}
-.mclose{margin-left:auto;background:none;border:none;color:var(--g400);font-size:24px;cursor:pointer;align-self:flex-start}
+.minfo .mempresa{font-size:13px;color:var(--g400);margin-top:3px}
+.minfo .mtipo{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-top:6px}
+.minfo .mfecha{font-size:12px;color:var(--g600);margin-top:3px}
+.mclose{float:right;background:none;border:none;color:var(--g400);font-size:24px;cursor:pointer;margin-top:-4px}
 .mclose:hover{color:var(--white)}
 .modal-body{padding:28px 32px}
 .msec{margin-bottom:28px}.msec:last-child{margin-bottom:0}
 .msec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--g200)}
 .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+.mgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 20px}
 .mfield label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--g400);margin-bottom:3px}
-.mfield p{font-size:14px;font-weight:500;color:var(--black);word-break:break-all}
+.mfield p{font-size:14px;font-weight:500;color:var(--black)}
 .sub{background:var(--g100);border-radius:10px;padding:16px;margin-bottom:10px}
 .sub:last-child{margin-bottom:0}
 .sub-title{font-size:12px;font-weight:700;color:var(--g600);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
-.sub-div{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--g400);margin:12px 0 8px;padding-top:10px;border-top:1px solid var(--g200)}
-.foto-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-.foto-item{text-align:center}
-.foto-item span{display:block;font-size:10px;color:var(--g400);margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
-.foto-item img{width:80px;height:80px;object-fit:cover;border-radius:8px;border:1.5px solid var(--g200);display:block}
-.doc-pill{display:inline-flex;align-items:center;gap:6px;background:#eef6ff;color:#1a5fa3;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;text-decoration:none;border:1.5px solid #b8d4f5;margin:4px}
-.doc-pill:hover{background:#daeeff}
 @media(max-width:600px){
-  .mgrid,.two-col,.carnet-row,.doc-grid,.qty-row{grid-template-columns:1fr}
-  .modal-body{padding:20px}.modal-head{padding:20px;gap:12px}
+  .mgrid,.mgrid3,.two-col,.three-col,.qty-row{grid-template-columns:1fr}
+  .modal-body,.modal-head{padding:20px}
   .grid{grid-template-columns:1fr}.topbar{padding:0 16px}
 }
 </style>
@@ -161,11 +132,15 @@ body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);mi
 <div class="form-wrap">
   <div class="form-header">
     <h1>Registro de Colaboradores</h1>
-    <p>Completa tus datos, conductores y vehículos.</p>
+    <p>Completa los datos del colaborador, conductores y vehículos.</p>
   </div>
+
   <div class="card">
     <div class="card-title">Datos del colaborador</div>
-    <div class="fr"><label>Nombre completo <span class="req">*</span></label><input type="text" id="f-nombre" placeholder="José Manuel García"></div>
+    <div class="two-col">
+      <div class="fr"><label>Nombre completo <span class="req">*</span></label><input type="text" id="f-nombre" placeholder="José Manuel García"></div>
+      <div class="fr"><label>Nombre de empresa</label><input type="text" id="f-empresa" placeholder="Transportes García S.L."></div>
+    </div>
     <div class="fr">
       <label>Tipo <span class="req">*</span></label>
       <div class="radio-group">
@@ -173,12 +148,18 @@ body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);mi
         <label class="radio-opt"><input type="radio" name="tipo" value="Autónomo"> Autónomo</label>
       </div>
     </div>
-    <div class="fr"><label>GIF / NIF <span class="req">*</span></label><input type="text" id="f-nif" placeholder="B12345678"></div>
-    <div class="fr"><label>TLF de contacto <span class="req">*</span></label><input type="tel" id="f-tlf" placeholder="+34 600 000 000"></div>
+    <div class="two-col">
+      <div class="fr"><label>NIF <span class="req">*</span></label><input type="text" id="f-nif" placeholder="B12345678"></div>
+      <div class="fr"><label>TLF de contacto <span class="req">*</span></label><input type="tel" id="f-tlf" placeholder="+34 600 000 000"></div>
+    </div>
     <div class="fr"><label>Email de contacto <span class="req">*</span></label><input type="email" id="f-email" placeholder="colaborador@email.com"></div>
-    <div class="fr"><label>Dirección <span class="req">*</span></label><input type="text" id="f-dir" placeholder="Calle Mayor 1, Marbella"></div>
+    <div class="two-col">
+      <div class="fr"><label>Dirección fiscal <span class="req">*</span></label><input type="text" id="f-dir" placeholder="Calle Mayor 1, Marbella"></div>
+      <div class="fr"><label>Base <span class="req">*</span></label><input type="text" id="f-base" placeholder="Marbella, Málaga"></div>
+    </div>
     <div class="fr"><label>Comentarios</label><textarea id="f-comentarios" placeholder="Notas adicionales…"></textarea></div>
   </div>
+
   <div class="card">
     <div class="card-title">¿Cuántos conductores y vehículos?</div>
     <div class="qty-row">
@@ -200,14 +181,11 @@ body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);mi
       </div>
     </div>
   </div>
+
   <div id="conductores-wrap"></div>
   <div id="vehiculos-wrap"></div>
+
   <button class="btn-submit" id="btn-submit" onclick="submitForm()">Guardar registro →</button>
-  <div class="progress-wrap" id="progress-wrap">
-    <div class="progress-label">Subiendo archivos a Google Drive…</div>
-    <div class="progress-bar-bg"><div class="progress-bar" id="progress-bar"></div></div>
-    <div class="progress-step" id="progress-step">Preparando…</div>
-  </div>
   <div class="msg ok" id="msg-ok">✅ Registro enviado correctamente. ¡Gracias!</div>
   <div class="msg err" id="msg-err">❌ Error al enviar. Inténtalo de nuevo.</div>
 </div>
@@ -253,7 +231,6 @@ body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);mi
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwxHPpD65WAeEfUimy0FpfOodhMcW5fY4OWTH_RaZmH9hexSZorlkseT6qu_TJX4OF/exec';
 var ADMIN_PASS = 'momo2024';
 var qtys = { conductores: 1, vehiculos: 1 };
-var fileMap = {};
 var colaboradores = [];
 
 window.onload = function() {
@@ -279,32 +256,9 @@ function renderConductores() {
       '<div class="block-head"><div class="block-num">' + i + '</div><h3>Conductor ' + i + '</h3></div>' +
       '<div class="block-body">' +
         '<div class="fr"><label>Nombre completo <span class="req">*</span></label><input type="text" id="c' + i + '-nombre" placeholder="Nombre del conductor"></div>' +
-        '<div class="fr"><label>Número de licencia <span class="req">*</span></label><input type="text" id="c' + i + '-licencia" placeholder="VTC-00000"></div>' +
         '<div class="two-col">' +
           '<div class="fr"><label>TLF <span class="req">*</span></label><input type="tel" id="c' + i + '-tlf" placeholder="+34 600 000 000"></div>' +
           '<div class="fr"><label>Email</label><input type="email" id="c' + i + '-email" placeholder="conductor@email.com"></div>' +
-        '</div>' +
-        '<div class="sublabel">Foto del conductor</div>' +
-        '<div class="fr"><label>Foto frontal (chaqueta oscura, camisa blanca) <span class="req">*</span></label>' +
-          '<div class="upload-box" id="box-c' + i + '-foto">' +
-            '<input type="file" accept="image/*" onchange="handlePhoto(event,\'c' + i + '-foto\')">' +
-            '<div class="upload-icon">📷</div><p>Haz clic para subir foto</p>' +
-            '<img class="photo-preview" id="prev-c' + i + '-foto">' +
-          '</div></div>' +
-        '<div class="sublabel">Carnet de conducir</div>' +
-        '<div class="carnet-row">' +
-          '<div class="fr"><label>Delantera <span class="req">*</span></label>' +
-            '<div class="upload-box" id="box-c' + i + '-front">' +
-              '<input type="file" accept="image/*" onchange="handlePhoto(event,\'c' + i + '-front\')">' +
-              '<div class="upload-icon">🪪</div><p>Parte delantera</p>' +
-              '<img class="photo-preview" id="prev-c' + i + '-front">' +
-            '</div></div>' +
-          '<div class="fr"><label>Trasera <span class="req">*</span></label>' +
-            '<div class="upload-box" id="box-c' + i + '-back">' +
-              '<input type="file" accept="image/*" onchange="handlePhoto(event,\'c' + i + '-back\')">' +
-              '<div class="upload-icon">🪪</div><p>Parte trasera</p>' +
-              '<img class="photo-preview" id="prev-c' + i + '-back">' +
-            '</div></div>' +
         '</div>' +
       '</div></div>';
   }
@@ -319,112 +273,16 @@ function renderVehiculos() {
       '<div class="block-head"><div class="block-num">' + i + '</div><h3>Vehículo ' + i + '</h3></div>' +
       '<div class="block-body">' +
         '<div class="two-col">' +
-          '<div class="fr"><label>Modelo y año</label><input type="text" id="v' + i + '-modelo" placeholder="Mercedes Clase E 2022"></div>' +
-          '<div class="fr"><label>Matrícula</label><input type="text" id="v' + i + '-matricula" placeholder="0000 ABC"></div>' +
+          '<div class="fr"><label>Marca <span class="req">*</span></label><input type="text" id="v' + i + '-marca" placeholder="Mercedes"></div>' +
+          '<div class="fr"><label>Modelo <span class="req">*</span></label><input type="text" id="v' + i + '-modelo" placeholder="Clase E"></div>' +
         '</div>' +
-        '<div class="fr"><label>Comentarios</label><textarea id="v' + i + '-comentarios" placeholder="Notas…" style="min-height:60px"></textarea></div>' +
-        '<div class="sublabel">Documentos del vehículo</div>' +
-        '<div class="doc-grid">' +
-          makeDocBox('v' + i + '-vtc', 'Vehicle for Hire Permit (VTC)') +
-          makeDocBox('v' + i + '-permiso', 'Permiso de circulación') +
-          makeDocBox('v' + i + '-itv', 'ITV') +
-          makeDocBox('v' + i + '-seguro', 'Seguro') +
+        '<div class="two-col">' +
+          '<div class="fr"><label>Año</label><input type="number" id="v' + i + '-ano" placeholder="2022" min="2000" max="2030"></div>' +
+          '<div class="fr"><label>Matrícula <span class="req">*</span></label><input type="text" id="v' + i + '-matricula" placeholder="0000 ABC"></div>' +
         '</div>' +
       '</div></div>';
   }
   wrap.innerHTML = html;
-}
-
-function makeDocBox(key, label) {
-  return '<div class="fr"><label>' + label + ' <span class="req">*</span></label>' +
-    '<div class="doc-box" id="box-' + key + '">' +
-      '<input type="file" accept="image/*,application/pdf" onchange="handleDoc(event,\'' + key + '\')">' +
-      '<div class="doc-icon">📋</div><p>PDF o imagen</p>' +
-      '<span class="doc-name" id="doc-name-' + key + '"></span>' +
-    '</div></div>';
-}
-
-function compressImage(file, maxSize, quality, callback) {
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    var img = new Image();
-    img.onload = function() {
-      var canvas = document.createElement('canvas');
-      var w = img.width, h = img.height;
-      if (w > maxSize || h > maxSize) {
-        if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
-        else { w = Math.round(w * maxSize / h); h = maxSize; }
-      }
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      callback(canvas.toDataURL('image/jpeg', quality));
-    };
-    img.src = ev.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function handlePhoto(e, key) {
-  var file = e.target.files[0];
-  if (!file) return;
-  compressImage(file, 1200, 0.82, function(data) {
-    fileMap[key] = { data: data, name: key + '.jpg', type: 'image/jpeg' };
-    var prev = document.getElementById('prev-' + key);
-    prev.src = data;
-    prev.style.display = 'block';
-    var box = document.getElementById('box-' + key);
-    box.querySelector('.upload-icon').style.display = 'none';
-    box.querySelector('p').style.display = 'none';
-  });
-}
-
-function handleDoc(e, key) {
-  var file = e.target.files[0];
-  if (!file) return;
-  if (file.type === 'application/pdf') {
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      fileMap[key] = { data: ev.target.result, name: file.name, type: 'application/pdf' };
-      showDocDone(key, file.name, '📄');
-    };
-    reader.readAsDataURL(file);
-  } else {
-    compressImage(file, 1600, 0.85, function(data) {
-      fileMap[key] = { data: data, name: file.name, type: 'image/jpeg' };
-      showDocDone(key, file.name, '🖼️');
-    });
-  }
-}
-
-function showDocDone(key, name, icon) {
-  var nameEl = document.getElementById('doc-name-' + key);
-  nameEl.textContent = '✅ ' + name;
-  nameEl.classList.add('show');
-  var box = document.getElementById('box-' + key);
-  box.querySelector('.doc-icon').textContent = icon;
-  box.querySelector('p').style.display = 'none';
-  box.style.borderColor = 'var(--green)';
-}
-
-function setProgress(step, total, label) {
-  document.getElementById('progress-bar').style.width = Math.round((step / total) * 100) + '%';
-  document.getElementById('progress-step').textContent = label;
-}
-
-function uploadFile(fileObj, colaborador, subfolder, filename) {
-  return fetch(SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      type: 'upload',
-      colaborador: colaborador,
-      subfolder: subfolder,
-      fileData: fileObj.data,
-      fileName: filename
-    })
-  }).then(function(r) { return r.json(); }).then(function(res) {
-    return res.url || '';
-  });
 }
 
 function val(id) {
@@ -439,106 +297,65 @@ function submitForm() {
   var tlf = val('f-tlf');
   var email = val('f-email');
   var dir = val('f-dir');
-  if (!nombre || !tipoEl || !nif || !tlf || !email || !dir) {
+  var base = val('f-base');
+  if (!nombre || !tipoEl || !nif || !tlf || !email || !dir || !base) {
     alert('Por favor completa todos los campos obligatorios.');
     return;
+  }
+
+  var conductores = [];
+  for (var i = 1; i <= qtys.conductores; i++) {
+    conductores.push({
+      nombre: val('c' + i + '-nombre'),
+      tlf: val('c' + i + '-tlf'),
+      email: val('c' + i + '-email')
+    });
+  }
+
+  var vehiculos = [];
+  for (var j = 1; j <= qtys.vehiculos; j++) {
+    vehiculos.push({
+      marca: val('v' + j + '-marca'),
+      modelo: val('v' + j + '-modelo'),
+      ano: val('v' + j + '-ano'),
+      matricula: val('v' + j + '-matricula')
+    });
   }
 
   var btn = document.getElementById('btn-submit');
   btn.disabled = true;
   btn.textContent = 'Enviando…';
-  document.getElementById('progress-wrap').style.display = 'block';
-  document.getElementById('msg-ok').style.display = 'none';
-  document.getElementById('msg-err').style.display = 'none';
 
-  var colaboradorNombre = nombre + ' - ' + nif;
-
-  // Construir lista de uploads a hacer
-  var uploads = [];
-  for (var i = 1; i <= qtys.conductores; i++) {
-    var cNombre = val('c' + i + '-nombre') || ('Conductor ' + i);
-    var subfolder = 'Conductores/' + cNombre;
-    if (fileMap['c' + i + '-foto']) uploads.push({ key: 'c' + i + '-foto', subfolder: subfolder, filename: 'foto_conductor.jpg', target: 'conductor', idx: i-1, field: 'fotoUrl' });
-    if (fileMap['c' + i + '-front']) uploads.push({ key: 'c' + i + '-front', subfolder: subfolder, filename: 'carnet_frontal.jpg', target: 'conductor', idx: i-1, field: 'carnetFrontUrl' });
-    if (fileMap['c' + i + '-back']) uploads.push({ key: 'c' + i + '-back', subfolder: subfolder, filename: 'carnet_trasero.jpg', target: 'conductor', idx: i-1, field: 'carnetBackUrl' });
-  }
-  for (var j = 1; j <= qtys.vehiculos; j++) {
-    var mat = val('v' + j + '-matricula') || ('Vehiculo ' + j);
-    var vsubfolder = 'Vehiculos/' + mat;
-    if (fileMap['v' + j + '-vtc']) uploads.push({ key: 'v' + j + '-vtc', subfolder: vsubfolder, filename: 'vtc.pdf', target: 'vehiculo', idx: j-1, field: 'vtcUrl' });
-    if (fileMap['v' + j + '-permiso']) uploads.push({ key: 'v' + j + '-permiso', subfolder: vsubfolder, filename: 'permiso_circulacion.pdf', target: 'vehiculo', idx: j-1, field: 'permisoUrl' });
-    if (fileMap['v' + j + '-itv']) uploads.push({ key: 'v' + j + '-itv', subfolder: vsubfolder, filename: 'itv.pdf', target: 'vehiculo', idx: j-1, field: 'itvUrl' });
-    if (fileMap['v' + j + '-seguro']) uploads.push({ key: 'v' + j + '-seguro', subfolder: vsubfolder, filename: 'seguro.pdf', target: 'vehiculo', idx: j-1, field: 'seguroUrl' });
-  }
-
-  // Datos base conductores y vehiculos
-  var conductores = [];
-  for (var ci = 1; ci <= qtys.conductores; ci++) {
-    conductores.push({ nombre: val('c'+ci+'-nombre'), licencia: val('c'+ci+'-licencia'), tlf: val('c'+ci+'-tlf'), email: val('c'+ci+'-email'), fotoUrl:'', carnetFrontUrl:'', carnetBackUrl:'' });
-  }
-  var vehiculos = [];
-  for (var vi = 1; vi <= qtys.vehiculos; vi++) {
-    vehiculos.push({ modelo: val('v'+vi+'-modelo'), matricula: val('v'+vi+'-matricula'), comentarios: val('v'+vi+'-comentarios'), vtcUrl:'', permisoUrl:'', itvUrl:'', seguroUrl:'' });
-  }
-
-  var total = uploads.length + 1;
-  var step = 0;
-
-  function uploadNext(idx) {
-    if (idx >= uploads.length) {
-      // Todos los archivos subidos, ahora enviar registro
-      setProgress(uploads.length, total, 'Guardando registro…');
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'registro',
-          nombre: nombre, tipo: tipoEl.value, nif: nif, tlf: tlf,
-          email: email, dir: dir, comentarios: val('f-comentarios'),
-          conductores: conductores, vehiculos: vehiculos
-        })
-      }).then(function() {
-        setProgress(total, total, '¡Completado!');
-        setTimeout(function() {
-          document.getElementById('progress-wrap').style.display = 'none';
-          document.getElementById('msg-ok').style.display = 'block';
-          setTimeout(function() { document.getElementById('msg-ok').style.display = 'none'; }, 5000);
-          resetForm();
-        }, 800);
-      }).catch(function() {
-        document.getElementById('msg-err').style.display = 'block';
-      }).finally(function() {
-        btn.disabled = false; btn.textContent = 'Guardar registro →';
-      });
-      return;
-    }
-
-    var u = uploads[idx];
-    setProgress(idx, total, 'Subiendo ' + u.filename + '…');
-    uploadFile(fileMap[u.key], colaboradorNombre, u.subfolder, u.filename).then(function(url) {
-      if (u.target === 'conductor') conductores[u.idx][u.field] = url;
-      else vehiculos[u.idx][u.field] = url;
-      uploadNext(idx + 1);
-    }).catch(function() {
-      uploadNext(idx + 1); // continuar aunque falle uno
-    });
-  }
-
-  uploadNext(0);
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nombre: nombre, empresa: val('f-empresa'), tipo: tipoEl.value,
+      nif: nif, tlf: tlf, email: email, dir: dir, base: base,
+      comentarios: val('f-comentarios'),
+      conductores: conductores, vehiculos: vehiculos
+    })
+  }).then(function() {
+    document.getElementById('msg-ok').style.display = 'block';
+    setTimeout(function() { document.getElementById('msg-ok').style.display = 'none'; }, 5000);
+    resetForm();
+  }).catch(function() {
+    document.getElementById('msg-err').style.display = 'block';
+    setTimeout(function() { document.getElementById('msg-err').style.display = 'none'; }, 4000);
+  }).finally(function() {
+    btn.disabled = false;
+    btn.textContent = 'Guardar registro →';
+  });
 }
 
 function resetForm() {
-  document.getElementById('f-nombre').value = '';
-  document.getElementById('f-nif').value = '';
-  document.getElementById('f-tlf').value = '';
-  document.getElementById('f-email').value = '';
-  document.getElementById('f-dir').value = '';
-  document.getElementById('f-comentarios').value = '';
+  var ids = ['f-nombre','f-empresa','f-nif','f-tlf','f-email','f-dir','f-base','f-comentarios'];
+  ids.forEach(function(id) { document.getElementById(id).value = ''; });
   document.querySelectorAll('input[name="tipo"]').forEach(function(r) { r.checked = false; });
   qtys = { conductores: 1, vehiculos: 1 };
   document.getElementById('val-conductores').textContent = 1;
   document.getElementById('val-vehiculos').textContent = 1;
-  fileMap = {};
   renderConductores();
   renderVehiculos();
 }
@@ -576,19 +393,28 @@ function renderFichas() {
   document.getElementById('spinner').style.display = 'none';
   var grid = document.getElementById('fichas-grid');
   document.getElementById('badge').textContent = colaboradores.length + ' colaborador' + (colaboradores.length !== 1 ? 'es' : '');
-  if (colaboradores.length === 0) { document.getElementById('empty').style.display = 'block'; grid.innerHTML = ''; return; }
+  if (colaboradores.length === 0) {
+    document.getElementById('empty').style.display = 'block';
+    grid.innerHTML = '';
+    return;
+  }
   var html = '';
   for (var i = 0; i < colaboradores.length; i++) {
     var c = colaboradores[i];
-    var foto = (c.conductores && c.conductores[0]) ? (c.conductores[0].fotoUrl || '') : '';
-    var av = foto ? '<div class="avatar"><img src="' + foto + '" onerror="this.parentElement.innerHTML=\'👤\'"></div>' : '<div class="avatar">👤</div>';
-    var pc = (c.conductores||[]).map(function(cd) { return '<span class="pill">' + (cd.nombre||'Conductor') + '</span>'; }).join('');
-    var pv = (c.vehiculos||[]).map(function(v) { return '<span class="pill gold">' + (v.matricula||v.modelo||'Vehículo') + '</span>'; }).join('');
+    var pc = (c.conductores||[]).map(function(cd) { return '<span class="pill">' + (cd.nombre||'—') + '</span>'; }).join('');
+    var pv = (c.vehiculos||[]).map(function(v) { return '<span class="pill gold">' + (v.marca||'') + ' ' + (v.modelo||'') + ' · ' + (v.matricula||'—') + '</span>'; }).join('');
     var fecha = c.fecha ? new Date(c.fecha).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}) : '—';
     html += '<div class="fcard" onclick="openModal(' + i + ')">' +
-      '<div class="fcard-top">' + av + '<div><div class="fcard-name">' + c.nombre + '</div><div class="fcard-tipo">' + c.tipo + ' · ' + c.nif + '</div></div></div>' +
-      '<div class="fcard-body"><div class="pill-row">' + pc + '</div><div class="pill-row">' + pv + '</div>' +
-      '<div class="fcard-meta">' + fecha + ' · ' + (c.conductores||[]).length + ' conductor(es) · ' + (c.vehiculos||[]).length + ' vehículo(s)</div></div>' +
+      '<div class="fcard-top">' +
+        '<div class="fcard-name">' + c.nombre + '</div>' +
+        (c.empresa ? '<div class="fcard-empresa">' + c.empresa + '</div>' : '') +
+        '<div class="fcard-tipo">' + (c.tipo||'') + ' · ' + c.nif + '</div>' +
+      '</div>' +
+      '<div class="fcard-body">' +
+        '<div class="pill-row">' + pc + '</div>' +
+        '<div class="pill-row">' + pv + '</div>' +
+        '<div class="fcard-meta">' + fecha + ' · Base: ' + (c.base||'—') + '</div>' +
+      '</div>' +
     '</div>';
   }
   grid.innerHTML = html;
@@ -596,22 +422,14 @@ function renderFichas() {
 
 function openModal(idx) {
   var c = colaboradores[idx];
-  var foto = (c.conductores && c.conductores[0]) ? (c.conductores[0].fotoUrl || '') : '';
-  var av = foto ? '<div class="mavatar"><img src="' + foto + '" onerror="this.parentElement.innerHTML=\'👤\'"></div>' : '<div class="mavatar">👤</div>';
   var fecha = c.fecha ? new Date(c.fecha).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}) : '—';
 
   var cHTML = '';
   for (var i = 0; i < (c.conductores||[]).length; i++) {
     var cd = c.conductores[i];
-    var fotos = '';
-    if (cd.fotoUrl) fotos += '<div class="foto-item"><img src="' + cd.fotoUrl + '" onerror="this.src=\'\'"><span>Foto</span></div>';
-    if (cd.carnetFrontUrl) fotos += '<div class="foto-item"><img src="' + cd.carnetFrontUrl + '" onerror="this.src=\'\'"><span>Carnet front</span></div>';
-    if (cd.carnetBackUrl) fotos += '<div class="foto-item"><img src="' + cd.carnetBackUrl + '" onerror="this.src=\'\'"><span>Carnet back</span></div>';
     cHTML += '<div class="sub"><div class="sub-title">Conductor ' + (i+1) + '</div>' +
-      (fotos ? '<div class="foto-row">' + fotos + '</div>' : '') +
       '<div class="mgrid">' +
         '<div class="mfield"><label>Nombre</label><p>' + (cd.nombre||'—') + '</p></div>' +
-        '<div class="mfield"><label>Nº Licencia</label><p>' + (cd.licencia||'—') + '</p></div>' +
         '<div class="mfield"><label>Teléfono</label><p>' + (cd.tlf||'—') + '</p></div>' +
         '<div class="mfield"><label>Email</label><p>' + (cd.email||'—') + '</p></div>' +
       '</div></div>';
@@ -620,33 +438,35 @@ function openModal(idx) {
   var vHTML = '';
   for (var j = 0; j < (c.vehiculos||[]).length; j++) {
     var v = c.vehiculos[j];
-    var docs = '';
-    if (v.vtcUrl) docs += '<a href="' + v.vtcUrl + '" target="_blank" class="doc-pill">📄 VTC</a>';
-    if (v.permisoUrl) docs += '<a href="' + v.permisoUrl + '" target="_blank" class="doc-pill">📄 Permiso</a>';
-    if (v.itvUrl) docs += '<a href="' + v.itvUrl + '" target="_blank" class="doc-pill">📄 ITV</a>';
-    if (v.seguroUrl) docs += '<a href="' + v.seguroUrl + '" target="_blank" class="doc-pill">📄 Seguro</a>';
     vHTML += '<div class="sub"><div class="sub-title">Vehículo ' + (j+1) + '</div>' +
-      '<div class="mgrid">' +
-        '<div class="mfield"><label>Modelo / Año</label><p>' + (v.modelo||'—') + '</p></div>' +
+      '<div class="mgrid3">' +
+        '<div class="mfield"><label>Marca</label><p>' + (v.marca||'—') + '</p></div>' +
+        '<div class="mfield"><label>Modelo</label><p>' + (v.modelo||'—') + '</p></div>' +
+        '<div class="mfield"><label>Año</label><p>' + (v.ano||'—') + '</p></div>' +
         '<div class="mfield"><label>Matrícula</label><p>' + (v.matricula||'—') + '</p></div>' +
-        (v.comentarios ? '<div class="mfield" style="grid-column:1/-1"><label>Comentarios</label><p>' + v.comentarios + '</p></div>' : '') +
-      '</div>' +
-      (docs ? '<div class="sub-div">Documentos</div><div>' + docs + '</div>' : '') +
-    '</div>';
+      '</div></div>';
   }
 
   document.getElementById('modal').innerHTML =
-    '<div class="modal-head">' + av +
-      '<div class="minfo"><h2>' + c.nombre + '</h2><div class="mtipo">' + c.tipo + ' · ' + c.nif + '</div><div class="mfecha">Registrado el ' + fecha + '</div></div>' +
+    '<div class="modal-head">' +
       '<button class="mclose" onclick="closeModal()">✕</button>' +
+      '<div class="minfo">' +
+        '<h2>' + c.nombre + '</h2>' +
+        (c.empresa ? '<div class="mempresa">' + c.empresa + '</div>' : '') +
+        '<div class="mtipo">' + (c.tipo||'') + ' · ' + c.nif + '</div>' +
+        '<div class="mfecha">Registrado el ' + fecha + '</div>' +
+      '</div>' +
     '</div>' +
     '<div class="modal-body">' +
-      '<div class="msec"><div class="msec-title">Datos del colaborador</div><div class="mgrid">' +
-        '<div class="mfield"><label>Teléfono</label><p>' + c.tlf + '</p></div>' +
-        '<div class="mfield"><label>Email</label><p>' + c.email + '</p></div>' +
-        '<div class="mfield" style="grid-column:1/-1"><label>Dirección</label><p>' + c.dir + '</p></div>' +
-        (c.comentarios ? '<div class="mfield" style="grid-column:1/-1"><label>Comentarios</label><p>' + c.comentarios + '</p></div>' : '') +
-      '</div></div>' +
+      '<div class="msec"><div class="msec-title">Datos del colaborador</div>' +
+        '<div class="mgrid">' +
+          '<div class="mfield"><label>Teléfono</label><p>' + (c.tlf||'—') + '</p></div>' +
+          '<div class="mfield"><label>Email</label><p>' + (c.email||'—') + '</p></div>' +
+          '<div class="mfield"><label>Dirección fiscal</label><p>' + (c.dir||'—') + '</p></div>' +
+          '<div class="mfield"><label>Base</label><p>' + (c.base||'—') + '</p></div>' +
+          (c.comentarios ? '<div class="mfield" style="grid-column:1/-1"><label>Comentarios</label><p>' + c.comentarios + '</p></div>' : '') +
+        '</div>' +
+      '</div>' +
       '<div class="msec"><div class="msec-title">Conductores (' + (c.conductores||[]).length + ')</div>' + cHTML + '</div>' +
       '<div class="msec"><div class="msec-title">Vehículos (' + (c.vehiculos||[]).length + ')</div>' + vHTML + '</div>' +
     '</div>';
