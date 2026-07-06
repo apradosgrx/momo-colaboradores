@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoMo — Registro de Colaboradores</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+:root {
+  --black:#0a0a0a;--white:#ffffff;--gold:#C9A84C;--gold-light:#e8c96e;
+  --g100:#f7f7f7;--g200:#ebebeb;--g400:#aaaaaa;--g600:#666;--g800:#333;
+  --red:#e03434;--green:#1a9e5a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);min-height:100vh}
+.topbar{background:var(--black);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:18px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.logo span{color:var(--white)}
+.tabs{display:flex;gap:4px}
+.tab{padding:6px 18px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;background:transparent;color:var(--g400)}
+.tab.active{background:var(--gold);color:var(--black)}
+.tab:hover:not(.active){background:#1e1e1e;color:var(--white)}
+.tab.hidden{display:none}
+.view{display:none}.view.active{display:block}
+.form-wrap{max-width:680px;margin:0 auto;padding:40px 16px 80px}
+.form-header{margin-bottom:32px}
+.form-header h1{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.form-header p{margin-top:6px;font-size:14px;color:var(--g600)}
+.card{background:var(--white);border-radius:12px;padding:28px 24px;margin-bottom:20px;border:1px solid var(--g200)}
+.card-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--g200)}
+.fr{margin-bottom:18px}.fr:last-child{margin-bottom:0}
+.fr label{display:block;font-size:13px;font-weight:500;color:var(--g800);margin-bottom:6px}
+.fr label .req{color:var(--red);margin-left:2px}
+.fr input[type=text],.fr input[type=email],.fr input[type=tel],.fr input[type=number],.fr textarea{width:100%;padding:10px 14px;border:1.5px solid var(--g200);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--black);background:var(--white);outline:none;transition:border-color .15s}
+.fr input:focus,.fr textarea:focus{border-color:var(--gold)}
+.fr textarea{resize:vertical;min-height:80px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.radio-group{display:flex;gap:12px;flex-wrap:wrap}
+.radio-opt{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:var(--g800);padding:8px 16px;border:1.5px solid var(--g200);border-radius:8px;transition:border-color .15s,background .15s}
+.radio-opt:has(input:checked){border-color:var(--gold);background:#fdf8ee}
+.radio-opt input{accent-color:var(--gold)}
+.qty-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.qty-field label{font-size:13px;font-weight:500;color:var(--g800);margin-bottom:8px;display:block}
+.qty-picker{display:flex;align-items:center;border:1.5px solid var(--g200);border-radius:8px;overflow:hidden;width:fit-content}
+.qty-btn{width:40px;height:40px;border:none;background:var(--g100);font-size:18px;cursor:pointer;color:var(--g600);font-family:'Inter',sans-serif}
+.qty-btn:hover{background:var(--g200)}
+.qty-val{width:48px;text-align:center;font-size:16px;font-weight:600;color:var(--black);background:var(--white);height:40px;line-height:40px}
+.block{background:var(--white);border-radius:12px;border:1px solid var(--g200);overflow:hidden;margin-bottom:16px}
+.block-head{background:var(--black);padding:12px 20px;display:flex;align-items:center;gap:10px}
+.block-num{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--black);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.block-head h3{font-size:14px;font-weight:600;color:var(--white)}
+.block-body{padding:20px}
+.btn-submit{width:100%;padding:14px;background:var(--gold);color:var(--black);border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:.04em;transition:background .15s;margin-top:8px}
+.btn-submit:hover{background:var(--gold-light)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+.msg{border-radius:10px;padding:16px 20px;text-align:center;font-weight:600;font-size:15px;margin-top:16px;display:none}
+.msg.ok{background:var(--green);color:var(--white)}
+.msg.err{background:var(--red);color:var(--white)}
+.login-wrap{max-width:380px;margin:80px auto;padding:0 16px}
+.login-card{background:var(--white);border-radius:16px;padding:36px 32px;border:1px solid var(--g200);text-align:center}
+.login-card h2{font-size:20px;font-weight:700;margin-bottom:6px}
+.login-card p{font-size:13px;color:var(--g600);margin-bottom:28px}
+.login-card input{width:100%;padding:12px 16px;border:1.5px solid var(--g200);border-radius:8px;font-size:15px;font-family:'Inter',sans-serif;outline:none;text-align:center;letter-spacing:.1em;margin-bottom:14px}
+.login-card input:focus{border-color:var(--gold)}
+.login-card button{width:100%;padding:12px;background:var(--gold);color:var(--black);border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer}
+.login-card button:hover{background:var(--gold-light)}
+.login-err{color:var(--red);font-size:13px;margin-top:10px;display:none}
+.fichas-wrap{max-width:1100px;margin:0 auto;padding:40px 20px 80px}
+.fichas-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:12px;flex-wrap:wrap}
+.fichas-top h2{font-size:22px;font-weight:700}
+.fichas-actions{display:flex;align-items:center;gap:10px}
+.badge{background:var(--gold);color:var(--black);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
+.btn-sm{background:none;border:1.5px solid var(--g200);color:var(--g600);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer}
+.btn-sm:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm.danger:hover{border-color:var(--red);color:var(--red)}
+.empty{text-align:center;padding:80px 20px;color:var(--g400)}
+.empty .ei{font-size:48px;margin-bottom:12px}
+.spinner{text-align:center;padding:60px;color:var(--g400);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.fcard{background:var(--white);border-radius:14px;border:1px solid var(--g200);overflow:hidden;cursor:pointer;transition:box-shadow .15s,transform .15s}
+.fcard:hover{box-shadow:0 8px 32px rgba(0,0,0,.1);transform:translateY(-2px)}
+.fcard-top{background:var(--black);padding:20px 24px}
+.fcard-name{font-size:17px;font-weight:700;color:var(--white)}
+.fcard-empresa{font-size:12px;color:var(--g400);margin-top:2px}
+.fcard-tipo{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-top:4px}
+.fcard-body{padding:16px 24px}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pill{background:var(--g100);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:500;color:var(--g600)}
+.pill.gold{background:#fdf8ee;color:#7a5e1a}
+.fcard-meta{font-size:12px;color:var(--g400)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:720px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.3);margin:auto}
+.modal-head{background:var(--black);padding:28px 32px}
+.minfo h2{font-size:22px;font-weight:700;color:var(--white)}
+.minfo .mempresa{font-size:13px;color:var(--g400);margin-top:3px}
+.minfo .mtipo{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-top:6px}
+.minfo .mfecha{font-size:12px;color:var(--g600);margin-top:3px}
+.mclose{float:right;background:none;border:none;color:var(--g400);font-size:24px;cursor:pointer;margin-top:-4px}
+.mclose:hover{color:var(--white)}
+.modal-body{padding:28px 32px}
+.msec{margin-bottom:28px}.msec:last-child{margin-bottom:0}
+.msec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--g200)}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+.mgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 20px}
+.mfield label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--g400);margin-bottom:3px}
+.mfield p{font-size:14px;font-weight:500;color:var(--black)}
+.sub{background:var(--g100);border-radius:10px;padding:16px;margin-bottom:10px}
+.sub:last-child{margin-bottom:0}
+.sub-title{font-size:12px;font-weight:700;color:var(--g600);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
+@media(max-width:600px){
+  .mgrid,.mgrid3,.two-col,.three-col,.qty-row{grid-template-columns:1fr}
+  .modal-body,.modal-head{padding:20px}
+  .grid{grid-template-columns:1fr}.topbar{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="logo">Mo<span>Mo</span> <span style="color:#555;font-weight:300;font-size:13px;letter-spacing:.06em">Transfers</span></div>
+  <div class="tabs">
+    <button class="tab active" id="tab-form" onclick="switchView('formulario')">Nuevo registro</button>
+    <button class="tab hidden" id="tab-fichas" onclick="switchView('fichas')">Fichas</button>
+    <button class="tab" id="tab-admin" onclick="switchView('admin')">Admin</button>
+  </div>
+</nav>
+
+<!-- FORMULARIO -->
+<div id="view-formulario" class="view active">
+<div class="form-wrap">
+  <div class="form-header">
+    <h1>Registro de Colaboradores</h1>
+    <p>Completa los datos del colaborador, conductores y vehículos.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Datos del colaborador</div>
+    <div class="two-col">
+      <div class="fr"><label>Nombre completo <span class="req">*</span></label><input type="text" id="f-nombre" placeholder="José Manuel García"></div>
+      <div class="fr"><label>Nombre de empresa</label><input type="text" id="f-empresa" placeholder="Transportes García S.L."></div>
+    </div>
+    <div class="fr">
+      <label>Tipo <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="tipo" value="Empresa"> Empresa</label>
+        <label class="radio-opt"><input type="radio" name="tipo" value="Autónomo"> Autónomo</label>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="fr"><label>NIF <span class="req">*</span></label><input type="text" id="f-nif" placeholder="B12345678"></div>
+      <div class="fr"><label>TLF de contacto <span class="req">*</span></label><input type="tel" id="f-tlf" placeholder="+34 600 000 000"></div>
+    </div>
+    <div class="fr"><label>Email de contacto <span class="req">*</span></label><input type="email" id="f-email" placeholder="colaborador@email.com"></div>
+    <div class="fr"><label>Denominación fiscal <span class="req">*</span></label><input type="text" id="f-denominacion" placeholder="Nombre con el que facturas"></div>
+    
+    <div class="two-col">
+      <div class="fr"><label>Dirección fiscal <span class="req">*</span></label><input type="text" id="f-dir" placeholder="Calle Mayor 1, Marbella"></div>
+      <div class="fr"><label>Base <span class="req">*</span></label><input type="text" id="f-base" placeholder="Marbella, Málaga"></div>
+    </div>
+    <div class="fr"><label>Número de cuenta (IBAN)</label><textarea id="f-comentarios" placeholder="ES00 0000 0000 0000 0000 0000" style="min-height:50px"></textarea></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">¿Cuántos conductores y vehículos?</div>
+    <div class="qty-row">
+      <div class="qty-field">
+        <label>Conductores</label>
+        <div class="qty-picker">
+          <button class="qty-btn" onclick="changeQty('conductores',-1)">−</button>
+          <div class="qty-val" id="val-conductores">1</div>
+          <button class="qty-btn" onclick="changeQty('conductores',1)">+</button>
+        </div>
+      </div>
+      <div class="qty-field">
+        <label>Vehículos</label>
+        <div class="qty-picker">
+          <button class="qty-btn" onclick="changeQty('vehiculos',-1)">−</button>
+          <div class="qty-val" id="val-vehiculos">1</div>
+          <button class="qty-btn" onclick="changeQty('vehiculos',1)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="conductores-wrap"></div>
+  <div id="vehiculos-wrap"></div>
+
+  <button class="btn-submit" id="btn-submit" onclick="submitForm()">Guardar registro →</button>
+  <div class="msg ok" id="msg-ok">✅ Registro enviado correctamente. ¡Gracias!</div>
+  <div class="msg err" id="msg-err">❌ Error al enviar. Inténtalo de nuevo.</div>
+</div>
+</div>
+
+<!-- ADMIN -->
+<div id="view-admin" class="view">
+<div class="login-wrap">
+  <div class="login-card">
+    <div style="font-size:36px;margin-bottom:12px">🔐</div>
+    <h2>Acceso Admin</h2>
+    <p>Solo para uso interno de MoMo Transfers</p>
+    <input type="password" id="admin-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkLogin()">
+    <button onclick="checkLogin()">Entrar</button>
+    <div class="login-err" id="login-err">Contraseña incorrecta</div>
+  </div>
+</div>
+</div>
+
+<!-- FICHAS -->
+<div id="view-fichas" class="view">
+<div class="fichas-wrap">
+  <div class="fichas-top">
+    <h2>Colaboradores registrados</h2>
+    <div class="fichas-actions">
+      <button class="btn-sm" onclick="loadFichas()">↻ Actualizar</button>
+      <span class="badge" id="badge">0</span>
+      <button class="btn-sm danger" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+  <div id="spinner" class="spinner">Cargando colaboradores…</div>
+  <div id="empty" class="empty" style="display:none"><div class="ei">📋</div><p>Aún no hay colaboradores registrados.</p></div>
+  <div class="grid" id="fichas-grid"></div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwxHPpD65WAeEfUimy0FpfOodhMcW5fY4OWTH_RaZmH9hexSZorlkseT6qu_TJX4OF/exec';
+var ADMIN_PASS = 'momo2024';
+var qtys = { conductores: 1, vehiculos: 1 };
+var colaboradores = [];
+
+window.onload = function() {
+  renderConductores();
+  renderVehiculos();
+};
+
+function changeQty(key, delta) {
+  var n = qtys[key] + delta;
+  if (n < 1) n = 1;
+  if (n > 6) n = 6;
+  qtys[key] = n;
+  document.getElementById('val-' + key).textContent = n;
+  if (key === 'conductores') renderConductores();
+  else renderVehiculos();
+}
+
+function renderConductores() {
+  var wrap = document.getElementById('conductores-wrap');
+  var html = '';
+  for (var i = 1; i <= qtys.conductores; i++) {
+    html += '<div class="block">' +
+      '<div class="block-head"><div class="block-num">' + i + '</div><h3>Conductor ' + i + '</h3></div>' +
+      '<div class="block-body">' +
+        '<div class="fr"><label>Nombre completo <span class="req">*</span></label><input type="text" id="c' + i + '-nombre" placeholder="Nombre del conductor"></div>' +
+        '<div class="two-col">' +
+          '<div class="fr"><label>TLF <span class="req">*</span></label><input type="tel" id="c' + i + '-tlf" placeholder="+34 600 000 000"></div>' +
+          '<div class="fr"><label>Email</label><input type="email" id="c' + i + '-email" placeholder="conductor@email.com"></div>' +
+        '</div>' +
+      '</div></div>';
+  }
+  wrap.innerHTML = html;
+}
+
+function renderVehiculos() {
+  var wrap = document.getElementById('vehiculos-wrap');
+  var html = '';
+  for (var i = 1; i <= qtys.vehiculos; i++) {
+    html += '<div class="block">' +
+      '<div class="block-head"><div class="block-num">' + i + '</div><h3>Vehículo ' + i + '</h3></div>' +
+      '<div class="block-body">' +
+        '<div class="two-col">' +
+          '<div class="fr"><label>Marca <span class="req">*</span></label><input type="text" id="v' + i + '-marca" placeholder="Mercedes"></div>' +
+          '<div class="fr"><label>Modelo <span class="req">*</span></label><input type="text" id="v' + i + '-modelo" placeholder="Clase E"></div>' +
+        '</div>' +
+        '<div class="two-col">' +
+          '<div class="fr"><label>Año</label><input type="number" id="v' + i + '-ano" placeholder="2022" min="2000" max="2030"></div>' +
+          '<div class="fr"><label>Matrícula <span class="req">*</span></label><input type="text" id="v' + i + '-matricula" placeholder="0000 ABC"></div>' +
+        '</div>' +
+      '</div></div>';
+  }
+  wrap.innerHTML = html;
+}
+
+function val(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function submitForm() {
+  var nombre = val('f-nombre');
+  var tipoEl = document.querySelector('input[name="tipo"]:checked');
+  var nif = val('f-nif');
+  var tlf = val('f-tlf');
+  var email = val('f-email');
+  var dir = val('f-dir');
+  var base = val('f-base');
+  if (!nombre || !tipoEl || !nif || !tlf || !email || !dir || !base) {
+    alert('Por favor completa todos los campos obligatorios.');
+    return;
+  }
+
+  var conductores = [];
+  for (var i = 1; i <= qtys.conductores; i++) {
+    conductores.push({
+      nombre: val('c' + i + '-nombre'),
+      tlf: val('c' + i + '-tlf'),
+      email: val('c' + i + '-email')
+    });
+  }
+
+  var vehiculos = [];
+  for (var j = 1; j <= qtys.vehiculos; j++) {
+    vehiculos.push({
+      marca: val('v' + j + '-marca'),
+      modelo: val('v' + j + '-modelo'),
+      ano: val('v' + j + '-ano'),
+      matricula: val('v' + j + '-matricula')
+    });
+  }
+
+  var btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nombre: nombre, empresa: val('f-empresa'), tipo: tipoEl.value,
+      nif: nif, tlf: tlf, email: email, denominacion: val('f-denominacion'),
+      dir: dir, base: base,
+      comentarios: val('f-comentarios'),
+      conductores: conductores, vehiculos: vehiculos
+    })
+  }).then(function() {
+    document.getElementById('msg-ok').style.display = 'block';
+    setTimeout(function() { document.getElementById('msg-ok').style.display = 'none'; }, 5000);
+    resetForm();
+  }).catch(function() {
+    document.getElementById('msg-err').style.display = 'block';
+    setTimeout(function() { document.getElementById('msg-err').style.display = 'none'; }, 4000);
+  }).finally(function() {
+    btn.disabled = false;
+    btn.textContent = 'Guardar registro →';
+  });
+}
+
+function resetForm() {
+  var ids = ['f-nombre','f-empresa','f-nif','f-tlf','f-email','f-denominacion','f-dir','f-base','f-comentarios'];
+  ids.forEach(function(id) { document.getElementById(id).value = ''; });
+  document.querySelectorAll('input[name="tipo"]').forEach(function(r) { r.checked = false; });
+  qtys = { conductores: 1, vehiculos: 1 };
+  document.getElementById('val-conductores').textContent = 1;
+  document.getElementById('val-vehiculos').textContent = 1;
+  renderConductores();
+  renderVehiculos();
+}
+
+function checkLogin() {
+  if (document.getElementById('admin-pass').value === ADMIN_PASS) {
+    document.getElementById('login-err').style.display = 'none';
+    document.getElementById('tab-fichas').classList.remove('hidden');
+    switchView('fichas');
+    loadFichas();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+
+function logout() {
+  document.getElementById('tab-fichas').classList.add('hidden');
+  document.getElementById('admin-pass').value = '';
+  switchView('formulario');
+}
+
+function loadFichas() {
+  document.getElementById('spinner').style.display = 'block';
+  document.getElementById('fichas-grid').innerHTML = '';
+  document.getElementById('empty').style.display = 'none';
+  fetch(SCRIPT_URL).then(function(r) { return r.json(); }).then(function(data) {
+    colaboradores = data;
+    renderFichas();
+  }).catch(function() {
+    document.getElementById('spinner').textContent = 'Error al cargar. Pulsa Actualizar.';
+  });
+}
+
+function renderFichas() {
+  document.getElementById('spinner').style.display = 'none';
+  var grid = document.getElementById('fichas-grid');
+  document.getElementById('badge').textContent = colaboradores.length + ' colaborador' + (colaboradores.length !== 1 ? 'es' : '');
+  if (colaboradores.length === 0) {
+    document.getElementById('empty').style.display = 'block';
+    grid.innerHTML = '';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < colaboradores.length; i++) {
+    var c = colaboradores[i];
+    var pc = (c.conductores||[]).map(function(cd) { return '<span class="pill">' + (cd.nombre||'—') + '</span>'; }).join('');
+    var pv = (c.vehiculos||[]).map(function(v) { return '<span class="pill gold">' + (v.marca||'') + ' ' + (v.modelo||'') + ' · ' + (v.matricula||'—') + '</span>'; }).join('');
+    var fecha = c.fecha ? new Date(c.fecha).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+    html += '<div class="fcard" onclick="openModal(' + i + ')">' +
+      '<div class="fcard-top">' +
+        '<div class="fcard-name">' + c.nombre + '</div>' +
+        (c.empresa ? '<div class="fcard-empresa">' + c.empresa + '</div>' : '') +
+        '<div class="fcard-tipo">' + (c.tipo||'') + ' · ' + c.nif + '</div>' +
+      '</div>' +
+      '<div class="fcard-body">' +
+        '<div class="pill-row">' + pc + '</div>' +
+        '<div class="pill-row">' + pv + '</div>' +
+        '<div class="fcard-meta">' + fecha + ' · Base: ' + (c.base||'—') + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function openModal(idx) {
+  var c = colaboradores[idx];
+  var fecha = c.fecha ? new Date(c.fecha).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+
+  var cHTML = '';
+  for (var i = 0; i < (c.conductores||[]).length; i++) {
+    var cd = c.conductores[i];
+    cHTML += '<div class="sub"><div class="sub-title">Conductor ' + (i+1) + '</div>' +
+      '<div class="mgrid">' +
+        '<div class="mfield"><label>Nombre</label><p>' + (cd.nombre||'—') + '</p></div>' +
+        '<div class="mfield"><label>Teléfono</label><p>' + (cd.tlf||'—') + '</p></div>' +
+        '<div class="mfield"><label>Email</label><p>' + (cd.email||'—') + '</p></div>' +
+      '</div></div>';
+  }
+
+  var vHTML = '';
+  for (var j = 0; j < (c.vehiculos||[]).length; j++) {
+    var v = c.vehiculos[j];
+    vHTML += '<div class="sub"><div class="sub-title">Vehículo ' + (j+1) + '</div>' +
+      '<div class="mgrid3">' +
+        '<div class="mfield"><label>Marca</label><p>' + (v.marca||'—') + '</p></div>' +
+        '<div class="mfield"><label>Modelo</label><p>' + (v.modelo||'—') + '</p></div>' +
+        '<div class="mfield"><label>Año</label><p>' + (v.ano||'—') + '</p></div>' +
+        '<div class="mfield"><label>Matrícula</label><p>' + (v.matricula||'—') + '</p></div>' +
+      '</div></div>';
+  }
+
+  document.getElementById('modal').innerHTML =
+    '<div class="modal-head">' +
+      '<button class="mclose" onclick="closeModal()">✕</button>' +
+      '<div class="minfo">' +
+        '<h2>' + c.nombre + '</h2>' +
+        (c.empresa ? '<div class="mempresa">' + c.empresa + '</div>' : '') +
+        '<div class="mtipo">' + (c.tipo||'') + ' · ' + c.nif + '</div>' +
+        '<div class="mfecha">Registrado el ' + fecha + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="modal-body">' +
+      '<div class="msec"><div class="msec-title">Datos del colaborador</div>' +
+        '<div class="mgrid">' +
+          '<div class="mfield"><label>Teléfono</label><p>' + (c.tlf||'—') + '</p></div>' +
+          '<div class="mfield"><label>Email</label><p>' + (c.email||'—') + '</p></div>' +
+          '<div class="mfield"><label>Dirección fiscal</label><p>' + (c.dir||'—') + '</p></div>' +
+          '<div class="mfield"><label>Base</label><p>' + (c.base||'—') + '</p></div>' +
+          '<div class="mfield"><label>Denominación fiscal</label><p>' + (c.denominacion||'—') + '</p></div>' +
+          
+          (c.comentarios ? '<div class="mfield" style="grid-column:1/-1"><label>Número de cuenta</label><p>' + c.comentarios + '</p></div>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="msec"><div class="msec-title">Conductores (' + (c.conductores||[]).length + ')</div>' + cHTML + '</div>' +
+      '<div class="msec"><div class="msec-title">Vehículos (' + (c.vehiculos||[]).length + ')</div>' + vHTML + '</div>' +
+    '</div>';
+
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('overlay'))
+    document.getElementById('overlay').classList.remove('open');
+}
+
+function switchView(v) {
+  document.querySelectorAll('.view').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('view-' + v).classList.add('active');
+  document.getElementById('tab-form').classList.toggle('active', v === 'formulario');
+  document.getElementById('tab-fichas').classList.toggle('active', v === 'fichas');
+  document.getElementById('tab-admin').classList.toggle('active', v === 'admin');
+}
+</script>
+</body>
+</html>
